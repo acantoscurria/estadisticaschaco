@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+        {% for s  in  escuelas %}
+            {{s.cueanexo}}
+        {% endfor %}
+{% endblock content %}
+

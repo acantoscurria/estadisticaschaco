@@ -4,7 +4,7 @@
 
 {% block css %}
       
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css'>
+
   <link rel='stylesheet' href='https://unicons.iconscout.com/release/v2.1.9/css/unicons.css'><link rel="stylesheet" href="{% static 'css/users/login.css' %}">
   
 {% endblock css %}
@@ -18,7 +18,7 @@
 			<div class="row full-height justify-content-center">
 				<div class="col-12 text-center align-self-center py-5">
 					<div class="section pb-5 pt-5 pt-sm-2 text-center">
-						<h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+						<h6 class="mb-0 pb-3"><span>Ingresar </span><span>Registrarse</span></h6>
 			          	<input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
 			          	<label for="reg-log"></label>
 						<div class="card-3d-wrap mx-auto">
@@ -26,17 +26,25 @@
 								<div class="card-front">
 									<div class="center-wrap">
 										<div class="section text-center">
-											<h4 class="mb-4 pb-3">Log In</h4>
-											<div class="form-group">
-												<input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
-												<i class="input-icon uil uil-at"></i>
-											</div>	
-											<div class="form-group mt-2">
-												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
-												<i class="input-icon uil uil-lock-alt"></i>
-											</div>
-											<a href="#" class="btn mt-4">submit</a>
-                            				<p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
+											<h4 class="mb-4 pb-3">Ingresar</h4>
+											<form action="{% url 'users:login' %}" method="POST">
+												{% csrf_token %}
+												{{form.non_field_errors}}
+												
+												<div class="form-group">
+													<input type="text" name="username" class="form-style" placeholder="Usuario (cueanexo)" id="logemail" autocomplete="off">
+													<i class="input-icon uil uil-at"></i>
+													{{form.username.errors}}
+												</div>	
+												<div class="form-group mt-2">
+													<input type="password" name="password" class="form-style" placeholder="Contraseña RA" id="logpass" autocomplete="off">
+													<i class="input-icon uil uil-lock-alt"></i>
+													{{form.password.errors}}
+												</div>
+												<button type="submit" class="btn mt-4">Enviar</button>
+
+											</form>
+                            				<p class="mb-0 mt-4 text-center"><a href="#0" class="link">¿Olvidaste tu contraseña?</a></p>
 				      					</div>
 			      					</div>
 			      				</div>
@@ -56,7 +64,7 @@
 												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
 												<i class="input-icon uil uil-lock-alt"></i>
 											</div>
-											<a href="#" class="btn mt-4">submit</a>
+											<a href="#" class="btn mt-4">Enviar</a>
 				      					</div>
 			      					</div>
 			      				</div>
@@ -67,4 +75,6 @@
 	      	</div>
 	    </div>
 	</div>
+
+	<form action=""></form>
 {% endblock content %}
