@@ -10,4 +10,4 @@ class School(models.Model):
 
 
     def __str__(self) -> str:
-        return f"{self.cueanexo}"
+        return f"{self.cueanexo} {self.region} {self.oferta}"

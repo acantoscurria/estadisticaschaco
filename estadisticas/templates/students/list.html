@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+        {% for est  in estudiantes %}
+        <div class="container text-center mt-5 w-50 border border-primary  rounded-pill">
+            {{est}}
+        </div>
+        {% endfor %}
+
+
+{% endblock content %}
