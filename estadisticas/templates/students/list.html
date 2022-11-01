@@ -1,14 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/students/style.css' %}">
+    
+{% endblock css %}
+    
 
 {% block content %}
 
-        {% for est  in estudiantes %}
-        <div class="container text-center mt-5 w-50 border border-primary  rounded-pill">
-            {{est}}
+<div class="w-75 mx-auto row">
+    <a href="{% url 'schools:list_schools' %}" class="text-center btn btn-light w-25 mt-1 ml-1 d-block">Volver</a>
+    <a class="btn btn-success mt-1 ml-1 w-25">Cargar un nuevo alumno</a>
+</div>
+ <article class="leaderboard w-75 mx-auto mt-5">
+     <header>
+        <div class="">
+            <h1 class="leaderboard__title"><span class="leaderboard__title--top">Solicitud de Alumnos para disvincular</span>
+            <span class="leaderboard__title--bottom text-danger alert alert-success">Estas editando los alumnos de tu oferta: {{oferta}} </span>
         </div>
+    </h1>
+    </header>
+    <main class="leaderboard__profiles">
+        {% for est  in estudiantes %}
+            <article class="leaderboard__profile">
+              {% comment %} <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="{{est.dni}}" class="leaderboard__picture"> {% endcomment %}
+              <span class="leaderboard__name"> {{est.name}} {{est.last_name}}</span>
+              <span class="leaderboard__value">{{est.dni}}</span>
+            </article>
         {% endfor %}
+    </main>
+  </div>
 
 
 {% endblock content %}

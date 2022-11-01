@@ -18,4 +18,8 @@ class StudentListView(LoginRequiredMixin,ListView):
         queryset = Student.objects.filter(service_unit__cueanexo=self.request.user.username).filter(service_unit__oferta 
         = self.kwargs['oferta'])
 
+        self.extra_context={
+            "oferta":self.kwargs['oferta']
+        }
+
         return queryset
