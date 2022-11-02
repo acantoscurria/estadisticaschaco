@@ -1,7 +1,7 @@
 from email.policy import default
 from django.db import models
 from schools.models import School
-
+from django.forms import ModelForm
 # Create your models here.
 
 
@@ -16,3 +16,9 @@ class Student(models.Model):
 
     def __str__(self) -> str:
         return f'{self.name} {self.last_name} - {self.dni}'
+
+
+class StudentForm(ModelForm):
+    class Meta:
+        model = Student
+        fields = ['name', 'last_name', 'current_cueanexo',"to_seccion","to_seccion_type","dni"]
