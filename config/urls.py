@@ -11,9 +11,6 @@ urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     path("", include("users.urls")),
-    path("users/", include("users.urls")),
-    path("escuelas/", include("schools.urls")),
-    path("alumnos/", include("students.urls")),
     path("", TemplateView.as_view(template_name = "users/login.html")),
     # User management
     # Your stuff: custom urls includes go here

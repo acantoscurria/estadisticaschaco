@@ -11,4 +11,4 @@ class LoginUserView(LoginView):
     template_name= "users/login.html"
 
     def get_success_url(self):
-        return reverse("schools:list_schools")  # success_url may be lazy
+        return reverse("users:login")  # success_url may be lazy

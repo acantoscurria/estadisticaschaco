@@ -69,8 +69,6 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "users",
-    "schools",
-    "students",
 ]
 
 
