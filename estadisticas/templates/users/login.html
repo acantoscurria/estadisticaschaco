@@ -27,7 +27,7 @@
 									<div class="center-wrap">
 										<div class="section text-center">
 											<h4 class="mb-4 pb-3">Ingresar</h4>
-											<form action="{% url 'users:login' %}" method="POST">
+											<form action="{% url 'users:custom-login' %}" method="POST">
 												{% csrf_token %}
 												{{form.non_field_errors}}
 												
@@ -75,6 +75,4 @@
 	      	</div>
 	    </div>
 	</div>
-
-	<form action=""></form>
 {% endblock content %}
