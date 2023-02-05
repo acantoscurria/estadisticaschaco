@@ -9,3 +9,6 @@ class User(AbstractUser):
     failed_login_attempts = models.IntegerField(default=0)
 
     REQUIRED_FIELDS = ["password"]
+
+    def __str__(self):
+        return f"Cue: {self.username}"
