@@ -2,3 +2,65 @@
 {% load static %}
 
 
+{% block content %}
+    <div id="select-oferta" class="container text-center mt-5">
+        <select  class="form-select w-50 mx-auto" aria-label="Default select example">
+            <option selected>Seleccione una oferta</option>
+            {% for offer in  school_offers%}
+                <option value="{{offer.anexo}} | {{offer.oferta}}"> Anexo {{offer.anexo}} | {{offer.oferta}}</option>
+            {% endfor %}
+        </select>
+        <div>
+            <canvas id="myChart">
+                
+            </canvas>
+        </div>
+        
+    </div>
+
+
+    <script>
+    /*
+        const selectElement = document.querySelector('#select-oferta');
+
+        const queryStudents = async (offer) => {
+
+            try {
+                const response = await fetch(`/chart-data/${offer}`)
+                const data = await response.json()
+                console.log(data)
+            }
+            catch(error){
+                console.log(error)
+            }
+        }
+
+        selectElement.addEventListener('change', (event) => {
+            const resultado = document.querySelector('#select-oferta');
+            //console.log(`elegiste ${event.target.value}`);
+            //queryStudents(event.target.value)
+            location.href=`/school/chart-data/${event.target.value}`
+        });
+        */
+
+        const selectElement = $('#select-oferta');
+
+        selectElement.on('change', (event) => {
+        $.ajax({
+                url: `/school/chart-data/${event.target.value}`,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                            var ctx = $("#myChart");
+                            var myChart = new Chart(ctx, {
+                                type: "bar",
+                                data: data,
+                            });
+                        }
+            });
+        });
+
+
+    </script>
+
+{% endblock content %}
