@@ -46,7 +46,7 @@ def chart_data(request,oferta=None):
 
     datasets = []
     print(cueanexo,anexo,oferta,options_desempenio[oferta])
-    desempenio = DechDesempenio.objects.using("detch").raw("select * from dech.promedio_cueanexo('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name"),options_desempenio.get(oferta).get("col_name")))
+    desempenio = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name"),options_desempenio.get(oferta).get("col_name")))
     
 
     for i,d in enumerate(desempenio):
