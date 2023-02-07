@@ -28,7 +28,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: "Host(`estadisticaschaco.ga`)"
+      # rule: "Host(`estadisticaschaco.ga`)"
       entryPoints:
         - web-secure
       middlewares:
