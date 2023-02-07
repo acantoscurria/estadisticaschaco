@@ -52,7 +52,7 @@ def chart_data(request,oferta=None):
     for i,d in enumerate(desempenio):
         datasets.append(
             {
-            "label": f"{d.desempenio}",
+            "label": f"Nivel: {d.desempenio}",
             "data": [d.promedio],
             "backgroundColor": colors[i],
             "stack":"Stack0"
@@ -60,7 +60,7 @@ def chart_data(request,oferta=None):
         )
 
     data = {
-        "labels": [f"Desempeño: {oferta}",],
+        "labels": [f"Desempeño Matemática",],
         "datasets": datasets
     }
     print(data)
