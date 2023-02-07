@@ -10,3 +10,14 @@ class Offer(models.Model):
     anexo = models.CharField(max_length=250,null=True,blank=True)
     oferta = models.CharField(max_length=250,null=True,blank=True)
     nom_est = models.CharField(max_length=250,null=True,blank=True)
+
+
+class DechDesempenio(models.Model):
+    id = models.AutoField(primary_key=True)
+    cueanexo = models.TextField(max_length=100)
+    desempenio = models.BigIntegerField(default=0)
+    punto = models.BigIntegerField(default=0)
+    promedio = models.BigIntegerField(default=0)
+
+    class Meta:
+        managed= False

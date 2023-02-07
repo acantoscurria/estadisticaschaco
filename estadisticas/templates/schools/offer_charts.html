@@ -55,6 +55,31 @@
                             var myChart = new Chart(ctx, {
                                 type: "bar",
                                 data: data,
+                                stacked:true,
+                                options: {
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero: true,
+                                                callback: function(value, index, values) {
+                                                    return value * 100 + '%';
+                                                }
+                                            }
+                                        }]
+                                    },
+                                    tooltips: {
+                                        callbacks: {
+                                            label: function(tooltipItem, data) {
+                                                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                                if (label) {
+                                                    label += ': ';
+                                                }
+                                                label += (parseFloat(tooltipItem.yLabel)*100).toFixed(2) + '%';
+                                                return label;
+                                            }
+                                        }
+                                    }
+                                }
                             });
                         }
             });
@@ -64,3 +89,9 @@
     </script>
 
 {% endblock content %}
+
+
+
+    <script>
+
+    </script>
