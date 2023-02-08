@@ -106,14 +106,14 @@ def total_score_chart(request,oferta=None):
         "datasets": datasets
     }
 
-    if oferta == "Común - Primaria de 7 años":
-        total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje_primaria where cueanexo = '{}'".format(cueanexo))
-        print(total_score.columns)
-        data_format = {
+    data_format = {
             "label": "Puntaje total",
             "data": [],
             "backgroundColor":colors[0],
             }
+
+    if oferta == "Común - Primaria de 7 años":
+        total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje_primaria where cueanexo = '{}'".format(cueanexo))
 
         data_format["data"].append(total_score[0].pt_m)
         data_format["data"].append(total_score[0].pt_l)
@@ -123,8 +123,12 @@ def total_score_chart(request,oferta=None):
         datasets.append(data_format)
 
     else:
-        data = {}
+        total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje_secundaria where cueanexo = '{}'".format(cueanexo))
+        data_format["data"].append(total_score[0].pt_m)
+        data_format["data"].append(total_score[0].pt_l)
+        data_format["data"].append(total_score[0].pt_cn)
+        data_format["data"].append(total_score[0].pt_cs)
 
-    print(data)
+        datasets.append(data_format)
     
     return JsonResponse(data)

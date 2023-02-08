@@ -82,6 +82,13 @@
                                 data: data,
                                 stacked:false,
                                 options: {
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero: true,
+                                            }
+                                        }]
+                                    },
                                     title: {
                                     display: true,
                                     text: 'Puntaje Total',
