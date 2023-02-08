@@ -1,9 +1,9 @@
 from django.urls import include, path
-from .views import OfferSelectionView,chart_data
+from .views import OfferSelectionView,performance_chart
 
 app_name = 'schools'
 
 urlpatterns = [
     path("offer-selection/",OfferSelectionView.as_view(),name="offer-selection"),
-    path("chart-data/<oferta>",chart_data,name="chart-data"),
+    path("performance-chart/<oferta>",performance_chart,name="performance-chart"),
 ]

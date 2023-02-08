@@ -7,7 +7,37 @@ from users.models import User
 from schools.models import DechDesempenio
 
 # Create your views here.
-
+options_desempenio={
+        "Común - Secundaria Completa req. 7 años": {
+                                                    "table_name_cn":"dech.desempenio_secundaria_ciencias_naturales",
+                                                    "des_name_cn":"Desempeño Secundaria Ciencias Naturales",
+                                                    "col_name_cn": "secundaria_desempenio_cn", 
+                                                    "table_name_cs":"dech.desempenio_secundaria_ciencias_sociales",
+                                                    "des_name_cs":"Desempeño Secundaria Ciencias Sociales",
+                                                    "col_name_cs": "secundaria_desempenio_cs", 
+                                                    "table_name_l":"dech.desempenio_secundaria_lengua",
+                                                    "des_name_l":"Desempeño Secundaria Lengua",
+                                                    "col_name_l": "secundaria_desempenio_l", 
+                                                    "table_name_m":"dech.desempenio_secundaria_matematica",
+                                                    "des_name_m":"Desempeño Secundaria Matemática",
+                                                    "col_name_m": "secundaria_desempenio_m",
+                                                    },
+        "Común - Primaria de 7 años": {
+                                                    "table_name_cn":"dech.desempenio_primaria_ciencias_naturales",
+                                                    "des_name_cn":"Desempeño Primaria Ciencias Naturales",
+                                                    "col_name_cn": "primaria_desempenio_cn", 
+                                                    "table_name_cs":"dech.desempenio_primaria_ciencias_sociales",
+                                                    "des_name_cs":"Desempeño Primaria Ciencias Sociales",
+                                                    "col_name_cs": "primaria_desempenio_cs", 
+                                                    "table_name_l":"dech.desempenio_primaria_lengua",
+                                                    "des_name_l":"Desempeño Primaria Lengua",
+                                                    "col_name_l": "primaria_desempenio_l", 
+                                                    "table_name_m":"dech.desempenio_primaria_matematica",
+                                                    "des_name_m":"Desempeño Primaria Matemática",
+                                                    "col_name_m": "primaria_desempenio_m",
+                                                    },
+    }
+    
 
 colors = [
         'rgba(49, 66, 175)',
@@ -15,6 +45,7 @@ colors = [
         'rgba(175, 123, 49)',
         'rgba(131, 69, 119 )',
         ]
+
 
 class OfferSelectionView(LoginRequiredMixin,ListView):
     template_name = "schools/offer_charts.html"
@@ -27,72 +58,40 @@ class OfferSelectionView(LoginRequiredMixin,ListView):
 
 
 # añadir login required y solo metodo get
-def chart_data(request,oferta=None):
+def performance_chart(request,oferta=None):
     if not oferta:
         return JsonResponse({})
     
-    options_desempenio={
-        "Común - Secundaria Completa req. 7 años": {
-                                                    "table_name_cn":"dech.desempenio_secundaria_ciencias_naturales",
-                                                    "des_name_cn":"Desempeño Secundaria Ciencias Naturales",
-                                                    "col_name_cn": "secundaria_desempenio_cn", 
-                                                    "table_name_cs":"dech.desempenio_secundaria_ciencias_sociales",
-                                                    "des_name_cs":"Desempeño Secundaria Ciencias Sociales",
-                                                    "col_name_cs": "secundaria_desempenio_cs", 
-                                                    "table_name_l":"dech.desempenio_secundaria_lengua",
-                                                    "des_name_l":"Desempeño Secundaria Ciencias Lengua",
-                                                    "col_name_l": "secundaria_desempenio_l", 
-                                                    "table_name_m":"dech.desempenio_secundaria_matematica",
-                                                    "des_name_m":"Desempeño Secundaria Ciencias Naturales",
-                                                    "col_name_m": "secundaria_desempenio_m",
-                                                    },
-        "Común - Primaria de 7 años ": {
-                                                    "table_name_cn":"dech.desempenio_secundaria_ciencias_naturales",
-                                                    "des_name_cn":"Desempeño Secundaria Ciencias Naturales",
-                                                    "col_name_cn": "secundaria_desempenio_cn", 
-                                                    "table_name_cs":"dech.desempenio_secundaria_ciencias_sociales",
-                                                    "des_name_cs":"Desempeño Secundaria Ciencias Sociales",
-                                                    "col_name_cs": "secundaria_desempenio_cs", 
-                                                    "table_name_l":"dech.desempenio_secundaria_lengua",
-                                                    "des_name_l":"Desempeño Secundaria Ciencias Lengua",
-                                                    "col_name_l": "secundaria_desempenio_l", 
-                                                    "table_name_m":"dech.desempenio_secundaria_matematica",
-                                                    "des_name_m":"Desempeño Secundaria Ciencias Naturales",
-                                                    "col_name_m": "secundaria_desempenio_m",
-                                                    },
-    }
-    
     anexo,oferta = oferta.split(" | ")
-
     cueanexo = request.user.username + anexo
-
     datasets = []
-    # print(cueanexo,anexo,oferta,options_desempenio[oferta])
+    print(cueanexo,anexo,oferta)
 
+    try:
+        
+        pass
+    except:
+        return JsonResponse({})
+    
     desempenio_math = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_m"),options_desempenio.get(oferta).get("col_name_m")))
     desempenio_lengua = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_l"),options_desempenio.get(oferta).get("col_name_l")))
-    
+    desempenio_cs = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_cn"),options_desempenio.get(oferta).get("col_name_cn")))
+    desempenio_cn = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_cs"),options_desempenio.get(oferta).get("col_name_cs")))
 
-    for i,d in enumerate(desempenio_math):
-        datasets.append(
-            {
-            "label": f"Nivel: {d.desempenio}",
-            "data": [d.promedio],
-            "backgroundColor": colors[i],
+    for i in range(4):
+        data_format = {
+            "label": "",
+            "data": [],
+            "backgroundColor": "",
             "stack":"Stack0"
-            },
-        )
+            }
+        data_format["label"]=f"Nivel: {desempenio_math[i].desempenio}"
+        data_format["data"]=[desempenio_math[i].promedio,desempenio_lengua[i].promedio,desempenio_cs[i].promedio,desempenio_cn[i].promedio]
+        data_format["backgroundColor"]=colors[i]
+        print(data_format)
+        datasets.append(data_format)
 
-    for i,d in enumerate(desempenio_lengua):
-        datasets.append(
-            {
-            "label": f"Nivel: {d.desempenio}",
-            "data": [d.promedio],
-            "backgroundColor": colors[i],
-            "stack":"Stack1"
-            },
-        )
-
+    print(datasets)
     data = {
         "labels": ["Matemática","Lengua","Ciencias Naturales","Ciencias Sociales"],
         "datasets": datasets

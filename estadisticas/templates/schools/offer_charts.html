@@ -10,8 +10,11 @@
                 <option value="{{offer.anexo}} | {{offer.oferta}}"> Anexo {{offer.anexo}} | {{offer.oferta}}</option>
             {% endfor %}
         </select>
-        <div>
-            <canvas id="myChart">
+        <div class="container">
+            <canvas id="Desempenio" class="mt-5">
+                
+            </canvas>
+            <canvas id="Puntaje" class="mt-5">
                 
             </canvas>
         </div>
@@ -47,12 +50,12 @@
 
         selectElement.on('change', (event) => {
         $.ajax({
-                url: `/school/chart-data/${event.target.value}`,
+                url: `/school/performance-chart/${event.target.value}`,
                 type: 'GET',
                 success: function (data) {
                     console.log(data)
-                            var ctx = $("#myChart");
-                            var myChart = new Chart(ctx, {
+                            var ctx = $("#Desempenio");
+                            var Desempenio = new Chart(ctx, {
                                 type: "bar",
                                 data: data,
                                 stacked:true,
@@ -78,7 +81,12 @@
                                                 return label;
                                             }
                                         }
-                                    }
+                                    },
+                                    title: {
+                                    display: true,
+                                    text: 'Desempeño',
+                                    fontSize: 24
+                                    },
                                 }
                             });
                         }
