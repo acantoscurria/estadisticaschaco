@@ -21,3 +21,21 @@ class DechDesempenio(models.Model):
 
     class Meta:
         managed= False
+
+
+class DechTotalScore(models.Model):
+    id = models.AutoField(primary_key=True)
+    cueanexo = models.CharField(max_length=100)
+    puntaje_m = models.BigIntegerField(default=0)
+    puntaje_l = models.BigIntegerField(default=0)
+    puntaje_cn = models.BigIntegerField(default=0)
+    puntaje_cs = models.BigIntegerField(default=0)
+    pt_m = models.BigIntegerField(default=0)
+    pt_l = models.BigIntegerField(default=0)
+    pt_cn = models.BigIntegerField(default=0)
+    pt_cs = models.BigIntegerField(default=0)
+    puntaje_promedio = models.BigIntegerField(default=0)
+
+    class Meta:
+        managed= False
+

@@ -11,10 +11,10 @@
             {% endfor %}
         </select>
         <div class="container">
-            <canvas id="Desempenio" class="mt-5">
+            <canvas id="Puntaje" class="mt-5">
                 
             </canvas>
-            <canvas id="Puntaje" class="mt-5">
+            <canvas id="Desempenio" class="mt-5">
                 
             </canvas>
         </div>
@@ -23,28 +23,7 @@
 
 
     <script>
-    /*
-        const selectElement = document.querySelector('#select-oferta');
 
-        const queryStudents = async (offer) => {
-
-            try {
-                const response = await fetch(`/chart-data/${offer}`)
-                const data = await response.json()
-                console.log(data)
-            }
-            catch(error){
-                console.log(error)
-            }
-        }
-
-        selectElement.addEventListener('change', (event) => {
-            const resultado = document.querySelector('#select-oferta');
-            //console.log(`elegiste ${event.target.value}`);
-            //queryStudents(event.target.value)
-            location.href=`/school/chart-data/${event.target.value}`
-        });
-        */
 
         const selectElement = $('#select-oferta');
 
@@ -85,12 +64,35 @@
                                     title: {
                                     display: true,
                                     text: 'Desempeño',
-                                    fontSize: 24
+                                    fontSize: 48
                                     },
                                 }
                             });
                         }
             });
+            
+            $.ajax({
+                url: `/school/total-score-chart/${event.target.value}`,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                            var ctx = $("#Puntaje");
+                            var Desempenio = new Chart(ctx, {
+                                type: "bar",
+                                data: data,
+                                stacked:false,
+                                options: {
+                                    title: {
+                                    display: true,
+                                    text: 'Puntaje Total',
+                                    fontSize: 48
+                                    },
+                                }
+                            });
+                        }
+            });
+
+
         });
 
 

@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 
 from users.models import User
-from schools.models import DechDesempenio
+from schools.models import DechDesempenio,DechTotalScore
 
 # Create your views here.
 options_desempenio={
@@ -55,8 +55,6 @@ class OfferSelectionView(LoginRequiredMixin,ListView):
     def get_queryset(self):
         return User.objects.get(username=self.request.user.username).offer_set.values('anexo','oferta')
     
-
-
 # añadir login required y solo metodo get
 def performance_chart(request,oferta=None):
     if not oferta:
@@ -65,18 +63,16 @@ def performance_chart(request,oferta=None):
     anexo,oferta = oferta.split(" | ")
     cueanexo = request.user.username + anexo
     datasets = []
-    print(cueanexo,anexo,oferta)
 
     try:
         
-        pass
+        desempenio_math = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_m"),options_desempenio.get(oferta).get("col_name_m")))
+        desempenio_lengua = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_l"),options_desempenio.get(oferta).get("col_name_l")))
+        desempenio_cs = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_cn"),options_desempenio.get(oferta).get("col_name_cn")))
+        desempenio_cn = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_cs"),options_desempenio.get(oferta).get("col_name_cs")))
     except:
-        return JsonResponse({})
+        return JsonResponse({"ocurrió una excepción"})
     
-    desempenio_math = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_m"),options_desempenio.get(oferta).get("col_name_m")))
-    desempenio_lengua = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_l"),options_desempenio.get(oferta).get("col_name_l")))
-    desempenio_cs = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_cn"),options_desempenio.get(oferta).get("col_name_cn")))
-    desempenio_cn = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_cs"),options_desempenio.get(oferta).get("col_name_cs")))
 
     for i in range(4):
         data_format = {
@@ -88,13 +84,47 @@ def performance_chart(request,oferta=None):
         data_format["label"]=f"Nivel: {desempenio_math[i].desempenio}"
         data_format["data"]=[desempenio_math[i].promedio,desempenio_lengua[i].promedio,desempenio_cs[i].promedio,desempenio_cn[i].promedio]
         data_format["backgroundColor"]=colors[i]
-        print(data_format)
         datasets.append(data_format)
 
-    print(datasets)
     data = {
         "labels": ["Matemática","Lengua","Ciencias Naturales","Ciencias Sociales"],
         "datasets": datasets
     }
+    return JsonResponse(data)
+
+#ver permisos, al menos de login
+def total_score_chart(request,oferta=None):
+
+    if not oferta:
+        return JsonResponse({})
+    
+    anexo,oferta = oferta.split(" | ")
+    cueanexo = request.user.username + anexo
+    datasets = []
+    data = {
+        "labels": ["Matemática","Lengua","Ciencias Naturales","Ciencias Sociales"],
+        "datasets": datasets
+    }
+
+    if oferta == "Común - Primaria de 7 años":
+        total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje_primaria where cueanexo = '{}'".format(cueanexo))
+        print(total_score.columns)
+        data_format = {
+            "label": "Puntaje total",
+            "data": [],
+            "backgroundColor":colors[0],
+            }
+
+        data_format["data"].append(total_score[0].pt_m)
+        data_format["data"].append(total_score[0].pt_l)
+        data_format["data"].append(total_score[0].pt_cn)
+        data_format["data"].append(total_score[0].pt_cs)
+
+        datasets.append(data_format)
+
+    else:
+        data = {}
+
     print(data)
+    
     return JsonResponse(data)
