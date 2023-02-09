@@ -28,6 +28,10 @@
         main.id = "main";
         main.className = "container";
 
+        var canvas0 = document.createElement("canvas");
+        canvas0.id = "participacion";
+        canvas0.className = "mt-5 mb-4";
+
         var canvas1 = document.createElement("canvas");
         canvas1.id = "Puntaje";
         canvas1.className = "mt-5";
@@ -53,6 +57,9 @@
         canvas6.id = "habilidad-cs";
         canvas6.className = "mt-5";
 
+
+
+        main.appendChild(canvas0);
         main.appendChild(canvas1);
         main.appendChild(canvas2);
         main.appendChild(canvas3);
@@ -384,6 +391,51 @@
                                 },
                                 formatter: function (value) {
                                     return value * 100 + '%';
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        $.ajax({
+            url: `/school/participation-chart/${event.target.value}`,
+            type: 'GET',
+            success: function (data) {
+                console.log(data)
+                var ctx = $("#participacion");
+                var Desempenio = new Chart(ctx, {
+                    type: "pie",
+                    data: data,
+                    stacked: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value, index, values) {
+                                        return value * 100 + '%';
+                                    }
+                                },
+                                display:false
+                            }]
+                        },
+                        title: {
+                            display: true,
+                            text: 'Nivel de participación',
+                            fontSize: 48
+                        },
+                        plugins: {
+                            datalabels: {
+                                display: true,
+                                color: 'black',
+                                align: 'center',
+                                font: {
+                                    size: 20
+                                },
+                                formatter: function (value) {
+                                    return value + '%';
                                 }
                             }
                         }

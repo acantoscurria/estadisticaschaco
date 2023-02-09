@@ -39,3 +39,7 @@ class DechTotalScore(models.Model):
     class Meta:
         managed= False
 
+
+class Participation(models.Model):
+    class Meta:
+        managed= False

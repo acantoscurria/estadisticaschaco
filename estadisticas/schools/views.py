@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 
 from users.models import User
-from schools.models import DechDesempenio,DechTotalScore
+from schools.models import DechDesempenio,DechTotalScore,Participation
 
 # Create your views here.
 options_desempenio={
@@ -81,10 +81,10 @@ options_capacidades={
     
 
 colors = [
-        'rgba(49, 66, 175,0.7)',
-        'rgba(49, 175, 116,0.7)',
-        'rgba(175, 123, 49,0.7)',
-        'rgba(131, 69, 119 ,0.7)',
+        'rgba(128, 139, 150,0.7)',
+        'rgba(52, 152, 219,0.7)',
+        'rgba(72, 201, 176,0.7)',
+        'rgba(88, 214, 141  ,0.7)',
         ]
 
 
@@ -314,4 +314,39 @@ def cs_ability_chart(request,oferta):
         "labels": ["Reconocimientos de Hechos / Datos","Reconocimiento de Conceptos","Interpretación de Fuentes","Análisis de Situación"],
         "datasets": datasets
     }
+    return JsonResponse(data)
+
+
+def participation_chart(request,oferta):
+
+    if not oferta:
+        return JsonResponse({})
+    
+    anexo,oferta = oferta.split(" | ")
+    cueanexo = request.user.username + anexo
+    datasets = []
+    nivel=""
+    data = {
+        "labels": ["Estudiantes presentes","No participaron"],
+        "datasets": datasets
+    }
+
+    data_format = {
+            "label": "Participación",
+            "data": [],
+            "backgroundColor":[colors[1],colors[0]],
+            }
+    
+    if oferta == "Común - Primaria de 7 años":
+        nivel = "primaria"
+    else:
+        nivel = "secundaria"
+    
+    participation = Participation.objects.using("detch").raw("select * from dech.participacion_{} where cueanexo = '{}'".format(nivel,cueanexo))
+    
+    data_format["data"].append(participation[0].porc_participacion)
+    data_format["data"].append(participation[0].porc_no_participacion)
+
+    datasets.append(data_format)
+    
     return JsonResponse(data)
