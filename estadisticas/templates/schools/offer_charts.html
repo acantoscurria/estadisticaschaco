@@ -28,10 +28,6 @@
         main.id = "main";
         main.className = "container";
 
-        var title = document.createElement("h2");
-        title.id = "nombre-escuela";
-        title.className = "text-center mt-4";
-
         var canvas1 = document.createElement("canvas");
         canvas1.id = "Puntaje";
         canvas1.className = "mt-5";
@@ -57,7 +53,6 @@
         canvas6.id = "habilidad-cs";
         canvas6.className = "mt-5";
 
-        main.appendChild(title);
         main.appendChild(canvas1);
         main.appendChild(canvas2);
         main.appendChild(canvas3);
@@ -67,7 +62,6 @@
 
         document.body.appendChild(main);
 
-        document.getElementById("nombre-escuela").textContent = ""
 
 
         $.ajax({
@@ -88,6 +82,12 @@
                                     callback: function (value, index, values) {
                                         return value * 100 + '%';
                                     },
+                                    fontSize:18
+                                },
+                            }], xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize: 18,
                                 },
                             }],
                         },
