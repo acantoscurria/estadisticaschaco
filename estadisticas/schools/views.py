@@ -59,20 +59,20 @@ options_capacidades={
                                                     "col_name_m_rs": "resolucion_de_situacion",
                                                     },
         "Común - Primaria de 7 años": {
-                                        "table_name_cn":"dech.capacidad_secundaria_ciencias_naturales",
+                                        "table_name_cn":"dech.capacidad_primaria_ciencias_naturales",
                                         "col_name_cn_com": "comunicacion", 
                                         "col_name_cn_rc": "reconocimiento_de_conceptos", 
                                         "col_name_cn_as": "analisis_de_situacion", 
-                                        "table_name_cs":"dech.capacidad_secundaria_ciencias_sociales",
+                                        "table_name_cs":"dech.capacidad_primaria_ciencias_sociales",
                                         "col_name_cs_as": "analisis_de_situacion", 
                                         "col_name_cs_if": "interpretacion_de_fuentes", 
                                         "col_name_cs_rc": "reconocimiento_de_conceptos", 
                                         "col_name_cs_hyd": "reconocimiento_de_hechos_datos", 
-                                        "table_name_l":"dech.capacidad_secundaria_lengua",
+                                        "table_name_l":"dech.capacidad_primaria_lengua",
                                         "col_name_l_rye": "reflexionar_y_evaluar", 
                                         "col_name_l_int": "interpretar", 
                                         "col_name_l_ext": "extraer", 
-                                        "table_name_m":"dech.capacidad_secundaria_matematica",
+                                        "table_name_m":"dech.capacidad_primaria_matematica",
                                         "col_name_m_rc": "reconocimientos_de_conceptos",
                                         "col_name_m_com": "comunicacion",
                                         "col_name_m_rs": "resolucion_de_situacion",
@@ -160,8 +160,6 @@ def total_score_chart(request,oferta=None):
             data_format["data"].append(total_score[0].pt_l)
             data_format["data"].append(total_score[0].pt_cn)
             data_format["data"].append(total_score[0].pt_cs)
-
-            datasets.append(data_format)
 
         else:
             total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje_secundaria where cueanexo = '{}'".format(cueanexo))
