@@ -3,112 +3,320 @@
 
 
 {% block content %}
-    <div id="select-oferta" class="container text-center mt-5">
-        <select  class="form-select w-50 mx-auto" aria-label="Default select example">
-            <option selected>Seleccione una oferta</option>
-            {% for offer in  school_offers%}
-                <option value="{{offer.anexo}} | {{offer.oferta}}"> Anexo {{offer.anexo}} | {{offer.oferta}}</option>
-            {% endfor %}
-        </select>
-        <div class="container">
-            <canvas id="Puntaje" class="mt-5">
-                
-            </canvas>
-            <canvas id="Desempenio" class="mt-5">
-                
-            </canvas>
-        </div>
-        
-    </div>
+<div id="select-oferta" class="container text-center mt-5">
+    <select class="form-select w-50 mx-auto" aria-label="Default select example">
+        <option selected>Seleccione una oferta</option>
+        {% for offer in school_offers%}
+        <option value="{{offer.anexo}} | {{offer.oferta}}"> Anexo {{offer.anexo}} | {{offer.oferta}}</option>
+        {% endfor %}
+    </select>
+</div>
 
 
-    <script>
+<script>
 
 
-        const selectElement = $('#select-oferta');
+    const selectElement = $('#select-oferta');
 
-        selectElement.on('change', (event) => {
+    selectElement.on('change', (event) => {
+
+        if ($("#main")) {
+            $("#main").remove();
+        }
+        var main = document.createElement("div");
+        main.id = "main";
+        main.className = "container";
+
+        var title= document.createElement("h2");
+        title.id="nombre-escuela";
+        title.className="text-center mt-4";
+
+        var canvas1 = document.createElement("canvas");
+        canvas1.id = "Puntaje";
+        canvas1.className = "mt-5";
+
+        var canvas2 = document.createElement("canvas");
+        canvas2.id = "Desempenio";
+        canvas2.className = "mt-5";
+
+        var canvas3 = document.createElement("canvas");
+        canvas3.id = "habilidad-matematica";
+        canvas3.className = "mt-5";
+
+        var canvas4 = document.createElement("canvas");
+        canvas4.id = "habilidad-lengua";
+        canvas4.className = "mt-5";
+
+        var canvas5 = document.createElement("canvas");
+        canvas5.id = "habilidad-cn";
+        canvas5.className = "mt-5";
+
+
+        var canvas6 = document.createElement("canvas");
+        canvas6.id = "habilidad-cs";
+        canvas6.className = "mt-5";
+
+        main.appendChild(title);
+        main.appendChild(canvas1);
+        main.appendChild(canvas2);
+        main.appendChild(canvas3);
+        main.appendChild(canvas4);
+        main.appendChild(canvas5);
+        main.appendChild(canvas6);
+
+        document.body.appendChild(main);
+
+        document.getElementById("nombre-escuela").textContent=""
+
+
         $.ajax({
-                url: `/school/performance-chart/${event.target.value}`,
-                type: 'GET',
-                success: function (data) {
-                    console.log(data)
-                            var ctx = $("#Desempenio");
-                            var Desempenio = new Chart(ctx, {
-                                type: "bar",
-                                data: data,
-                                stacked:true,
-                                options: {
-                                    scales: {
-                                        yAxes: [{
-                                            ticks: {
-                                                beginAtZero: true,
-                                                callback: function(value, index, values) {
-                                                    return value * 100 + '%';
-                                                }
-                                            }
-                                        }]
+            url: `/school/performance-chart/${event.target.value}`,
+            type: 'GET',
+            success: function (data) {
+                console.log(data)
+                var ctx = $("#Desempenio");
+                var Desempenio = new Chart(ctx, {
+                    type: "bar",
+                    data: data,
+                    stacked: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value, index, values) {
+                                        return value * 100 + '%';
                                     },
-                                    tooltips: {
-                                        callbacks: {
-                                            label: function(tooltipItem, data) {
-                                                var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                                                if (label) {
-                                                    label += ': ';
-                                                }
-                                                label += (parseFloat(tooltipItem.yLabel)*100).toFixed(2) + '%';
-                                                return label;
-                                            }
-                                        }
-                                    },
-                                    title: {
-                                    display: true,
-                                    text: 'Desempeño',
-                                    fontSize: 48
-                                    },
+                                },
+                            }],
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
+                                    return label;
                                 }
-                            });
-                        }
-            });
-            
-            $.ajax({
-                url: `/school/total-score-chart/${event.target.value}`,
-                type: 'GET',
-                success: function (data) {
-                    console.log(data)
-                            var ctx = $("#Puntaje");
-                            var Desempenio = new Chart(ctx, {
-                                type: "bar",
-                                data: data,
-                                stacked:false,
-                                options: {
-                                    scales: {
-                                        yAxes: [{
-                                            ticks: {
-                                                beginAtZero: true,
-                                            }
-                                        }]
-                                    },
-                                    title: {
-                                    display: true,
-                                    text: 'Puntaje Total',
-                                    fontSize: 48
-                                    },
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Desempeño',
+                            fontSize: 48
+                        },
+                    }
+                });
+            }
+        });
+
+        $.ajax({
+            url: `/school/total-score-chart/${event.target.value}`,
+            type: 'GET',
+            success: function (data) {
+                console.log(data)
+                var ctx = $("#Puntaje");
+                var Desempenio = new Chart(ctx, {
+                    type: "bar",
+                    data: data,
+                    stacked: false,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
                                 }
-                            });
-                        }
-            });
+                            }]
+                        },
+                        title: {
+                            display: true,
+                            text: 'Puntaje Total',
+                            fontSize: 48
+                        },
+                    }
+                });
+            }
+        });
 
+        $.ajax({
+            url: `/school/math-ability-chart/${event.target.value}`,
+            type: 'GET',
+            success: function (data) {
+                console.log(data)
+                var ctx = $("#habilidad-matematica");
+                var Desempenio = new Chart(ctx, {
+                    type: "bar",
+                    data: data,
+                    stacked: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value, index, values) {
+                                        return value * 100 + '%';
+                                    }
+                                }
+                            }]
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
+                                    return label;
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Desempeño según capacidades evaluadas en el área de Matemáticas.',
+                            fontSize: 48
+                        },
+                    }
+                });
+            }
+        });
 
+        $.ajax({
+            url: `/school/lan-ability-chart/${event.target.value}`,
+            type: 'GET',
+            success: function (data) {
+                console.log(data)
+                var ctx = $("#habilidad-lengua");
+                var Desempenio = new Chart(ctx, {
+                    type: "bar",
+                    data: data,
+                    stacked: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value, index, values) {
+                                        return value * 100 + '%';
+                                    }
+                                }
+                            }]
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
+                                    return label;
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Desempeño según capacidades evaluadas en el área de Lengua.',
+                            fontSize: 48
+                        },
+                    }
+                });
+            }
+        });
+
+        $.ajax({
+            url: `/school/cn-ability-chart/${event.target.value}`,
+            type: 'GET',
+            success: function (data) {
+                console.log(data)
+                var ctx = $("#habilidad-cn");
+                var Desempenio = new Chart(ctx, {
+                    type: "bar",
+                    data: data,
+                    stacked: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value, index, values) {
+                                        return value * 100 + '%';
+                                    }
+                                }
+                            }]
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
+                                    return label;
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Desempeño según capacidades evaluadas en el área de Ciencias Naturales.',
+                            fontSize: 48
+                        },
+                    }
+                });
+            }
+        });
+
+        $.ajax({
+            url: `/school/cs-ability-chart/${event.target.value}`,
+            type: 'GET',
+            success: function (data) {
+                console.log(data)
+                var ctx = $("#habilidad-cs");
+                var Desempenio = new Chart(ctx, {
+                    type: "bar",
+                    data: data,
+                    stacked: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value, index, values) {
+                                        return value * 100 + '%';
+                                    }
+                                }
+                            }]
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
+                                    return label;
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Desempeño según capacidades evaluadas en el área de Ciencias Sociales.',
+                            fontSize: 48
+                        },
+                    }
+                });
+            }
         });
 
 
-    </script>
+    });
+
+
+
+</script>
 
 {% endblock content %}
-
-
-
-    <script>
-
-    </script>

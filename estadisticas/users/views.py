@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth import login as auth_login
+from django.http import JsonResponse
+
 # Create your views here.
 from users.models import User
 
@@ -44,3 +46,26 @@ class CustomLoginView(UserPassesTestMixin,LoginView):
         
     def test_func(self):
         return not self.request.user.is_authenticated
+    
+
+def info_user(request):
+    if request.POST.username:
+        try:
+            user = User.objects.get(username=request.POST.username)
+        except:
+            return JsonResponse({'message':"El CUE ingresado no existe o no se encuentra dentro de la base DECH"})
+        
+        return JsonResponse({"cue":user.username,"nom_est":user.nom_est,})
+    
+
+def register(request):
+        try:
+            user = User.objects.get(username=request.POST.username)
+            if request.POST.password == request.POST.password_confirm:
+                user.set_password(request.POST.password)
+        except:
+            # aca hay que mandar un error form
+            return JsonResponse({'message':"El CUE ingresado no existe o no se encuentra dentro de la base DECH"})
+
+
+        return JsonResponse({"cue":user.username,"nom_est":user.nom_est,})

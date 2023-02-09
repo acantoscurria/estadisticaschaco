@@ -37,13 +37,54 @@ options_desempenio={
                                                     "col_name_m": "primaria_desempenio_m",
                                                     },
     }
+
+options_capacidades={
+        "Común - Secundaria Completa req. 7 años": {
+                                                    "table_name_cn":"dech.capacidad_secundaria_ciencias_naturales",
+                                                    "col_name_cn_com": "comunicacion", 
+                                                    "col_name_cn_rc": "reconocimiento_de_conceptos", 
+                                                    "col_name_cn_as": "analisis_de_situacion", 
+                                                    "table_name_cs":"dech.capacidad_secundaria_ciencias_sociales",
+                                                    "col_name_cs_as": "analisis_de_situacion", 
+                                                    "col_name_cs_if": "interpretacion_de_fuentes", 
+                                                    "col_name_cs_rc": "reconocimiento_de_conceptos", 
+                                                    "col_name_cs_hyd": "reconocimiento_de_hechos_datos", 
+                                                    "table_name_l":"dech.capacidad_secundaria_lengua",
+                                                    "col_name_l_rye": "reflexionar_y_evaluar", 
+                                                    "col_name_l_int": "interpretar", 
+                                                    "col_name_l_ext": "extraer", 
+                                                    "table_name_m":"dech.capacidad_secundaria_matematica",
+                                                    "col_name_m_rc": "reconocimientos_de_conceptos",
+                                                    "col_name_m_com": "comunicacion",
+                                                    "col_name_m_rs": "resolucion_de_situacion",
+                                                    },
+        "Común - Primaria de 7 años": {
+                                        "table_name_cn":"dech.capacidad_secundaria_ciencias_naturales",
+                                        "col_name_cn_com": "comunicacion", 
+                                        "col_name_cn_rc": "reconocimiento_de_conceptos", 
+                                        "col_name_cn_as": "analisis_de_situacion", 
+                                        "table_name_cs":"dech.capacidad_secundaria_ciencias_sociales",
+                                        "col_name_cs_as": "analisis_de_situacion", 
+                                        "col_name_cs_if": "interpretacion_de_fuentes", 
+                                        "col_name_cs_rc": "reconocimiento_de_conceptos", 
+                                        "col_name_cs_hyd": "reconocimiento_de_hechos_datos", 
+                                        "table_name_l":"dech.capacidad_secundaria_lengua",
+                                        "col_name_l_rye": "reflexionar_y_evaluar", 
+                                        "col_name_l_int": "interpretar", 
+                                        "col_name_l_ext": "extraer", 
+                                        "table_name_m":"dech.capacidad_secundaria_matematica",
+                                        "col_name_m_rc": "reconocimientos_de_conceptos",
+                                        "col_name_m_com": "comunicacion",
+                                        "col_name_m_rs": "resolucion_de_situacion",
+                                        },
+    }
     
 
 colors = [
-        'rgba(49, 66, 175)',
-        'rgba(49, 175, 116)',
-        'rgba(175, 123, 49)',
-        'rgba(131, 69, 119 )',
+        'rgba(49, 66, 175,0.7)',
+        'rgba(49, 175, 116,0.7)',
+        'rgba(175, 123, 49,0.7)',
+        'rgba(131, 69, 119 ,0.7)',
         ]
 
 
@@ -71,7 +112,7 @@ def performance_chart(request,oferta=None):
         desempenio_cs = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_cn"),options_desempenio.get(oferta).get("col_name_cn")))
         desempenio_cn = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get("table_name_cs"),options_desempenio.get(oferta).get("col_name_cs")))
     except:
-        return JsonResponse({"ocurrió una excepción"})
+        return JsonResponse({})
     
 
     for i in range(4):
@@ -111,24 +152,168 @@ def total_score_chart(request,oferta=None):
             "data": [],
             "backgroundColor":colors[0],
             }
+    try:
+        if oferta == "Común - Primaria de 7 años":
+            total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje_primaria where cueanexo = '{}'".format(cueanexo))
 
-    if oferta == "Común - Primaria de 7 años":
-        total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje_primaria where cueanexo = '{}'".format(cueanexo))
+            data_format["data"].append(total_score[0].pt_m)
+            data_format["data"].append(total_score[0].pt_l)
+            data_format["data"].append(total_score[0].pt_cn)
+            data_format["data"].append(total_score[0].pt_cs)
 
-        data_format["data"].append(total_score[0].pt_m)
-        data_format["data"].append(total_score[0].pt_l)
-        data_format["data"].append(total_score[0].pt_cn)
-        data_format["data"].append(total_score[0].pt_cs)
+            datasets.append(data_format)
 
-        datasets.append(data_format)
+        else:
+            total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje_secundaria where cueanexo = '{}'".format(cueanexo))
+            data_format["data"].append(total_score[0].pt_m)
+            data_format["data"].append(total_score[0].pt_l)
+            data_format["data"].append(total_score[0].pt_cn)
+            data_format["data"].append(total_score[0].pt_cs)
+    except:
+        return JsonResponse({})
 
-    else:
-        total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje_secundaria where cueanexo = '{}'".format(cueanexo))
-        data_format["data"].append(total_score[0].pt_m)
-        data_format["data"].append(total_score[0].pt_l)
-        data_format["data"].append(total_score[0].pt_cn)
-        data_format["data"].append(total_score[0].pt_cs)
-
-        datasets.append(data_format)
+    datasets.append(data_format)
     
+    return JsonResponse(data)
+
+def math_ability_chart(request,oferta):
+    if not oferta:
+        return JsonResponse({})
+    
+    anexo,oferta = oferta.split(" | ")
+    cueanexo = request.user.username + anexo
+    datasets = []
+
+    try:
+        
+        concepto = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_m"),options_capacidades.get(oferta).get("col_name_m_rc")))
+        comunicacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_m"),options_capacidades.get(oferta).get("col_name_m_com")))
+        resolucion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_m"),options_capacidades.get(oferta).get("col_name_m_rs")))
+    except:
+        return JsonResponse({})
+    
+
+    for i in range(4):
+        data_format = {
+            "label": "",
+            "data": [],
+            "backgroundColor": "",
+            "stack":"Stack0"
+            }
+        data_format["label"]=f"Nivel: {concepto[i].desempenio}"
+        data_format["data"]=[concepto[i].promedio,comunicacion[i].promedio,resolucion[i].promedio,]
+        data_format["backgroundColor"]=colors[i]
+        datasets.append(data_format)
+
+    data = {
+        "labels": ["Reconocimiento de Conceptos","Comunicación","Resolución de Situación"],
+        "datasets": datasets
+    }
+    return JsonResponse(data)
+
+def lan_ability_chart(request,oferta):
+    if not oferta:
+        return JsonResponse({})
+    
+    anexo,oferta = oferta.split(" | ")
+    cueanexo = request.user.username + anexo
+    datasets = []
+
+    try:
+        
+        reflexion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_l"),options_capacidades.get(oferta).get("col_name_l_rye")))
+        interpretar = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_l"),options_capacidades.get(oferta).get("col_name_l_int")))
+        extraer = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_l"),options_capacidades.get(oferta).get("col_name_l_ext")))
+    except:
+        return JsonResponse({})
+    
+
+    for i in range(4):
+        data_format = {
+            "label": "",
+            "data": [],
+            "backgroundColor": "",
+            "stack":"Stack0"
+            }
+        data_format["label"]=f"Nivel: {extraer[i].desempenio}"
+        data_format["data"]=[extraer[i].promedio,interpretar[i].promedio,reflexion[i].promedio,]
+        data_format["backgroundColor"]=colors[i]
+        datasets.append(data_format)
+
+    data = {
+        "labels": ["Extraer","Interpretar","Reflexión y Evaluación"],
+        "datasets": datasets
+    }
+    return JsonResponse(data)
+
+
+def cn_ability_chart(request,oferta):
+    if not oferta:
+        return JsonResponse({})
+    
+    anexo,oferta = oferta.split(" | ")
+    cueanexo = request.user.username + anexo
+    datasets = []
+
+    try:
+        
+        conceptos = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cn"),options_capacidades.get(oferta).get("col_name_cn_rc")))
+        comunicacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cn"),options_capacidades.get(oferta).get("col_name_cn_com")))
+        situacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cn"),options_capacidades.get(oferta).get("col_name_cn_as")))
+    except:
+        return JsonResponse({})
+    
+
+    for i in range(4):
+        data_format = {
+            "label": "",
+            "data": [],
+            "backgroundColor": "",
+            "stack":"Stack0"
+            }
+        data_format["label"]=f"Nivel: {conceptos[i].desempenio}"
+        data_format["data"]=[conceptos[i].promedio,comunicacion[i].promedio,situacion[i].promedio,]
+        data_format["backgroundColor"]=colors[i]
+        datasets.append(data_format)
+
+    data = {
+        "labels": ["Reconocimiento de Conceptos","Comunicación","Análisis de Situación"],
+        "datasets": datasets
+    }
+    return JsonResponse(data)
+
+def cs_ability_chart(request,oferta):
+    if not oferta:
+        return JsonResponse({})
+    
+    anexo,oferta = oferta.split(" | ")
+    cueanexo = request.user.username + anexo
+    datasets = []
+
+    try:
+        
+        fuente = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cs"),options_capacidades.get(oferta).get("col_name_cs_if")))
+        concepto = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cs"),options_capacidades.get(oferta).get("col_name_cs_rc")))
+        situacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cs"),options_capacidades.get(oferta).get("col_name_cs_as")))
+        hechos = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cs"),options_capacidades.get(oferta).get("col_name_cs_hyd")))
+    except:
+        return JsonResponse({})
+    
+
+    for i in range(4):
+        data_format = {
+            "label": "",
+            "data": [],
+            "backgroundColor": "",
+            "stack":"Stack0"
+            }
+        data_format["label"]=f"Nivel: {fuente[i].desempenio}"
+        data_format["data"]=[hechos[i].promedio,concepto[i].promedio,fuente[i].promedio,situacion[i].promedio,]
+        data_format["backgroundColor"]=colors[i]
+        datasets.append(data_format)
+
+    data = {
+        "labels": ["Reconocimientos de Hechos / Datos","Reconocimiento de Conceptos","Interpretación de Fuentes","Análisis de Situación"],
+        "datasets": datasets
+    }
     return JsonResponse(data)

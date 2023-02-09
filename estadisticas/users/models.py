@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser,BaseUserManager
 
 
 class User(AbstractUser):
-    random_pass = models.CharField(max_length=50,help_text="Password que utiliza en RA")
+    set_password = models.BooleanField(default=False)
     failed_login_attempts = models.IntegerField(default=0)
 
     REQUIRED_FIELDS = ["password"]
