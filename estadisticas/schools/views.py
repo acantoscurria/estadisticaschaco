@@ -150,7 +150,7 @@ def total_score_chart(request,oferta=None):
     data_format = {
             "label": "Puntaje total",
             "data": [],
-            "backgroundColor":colors[0],
+            "backgroundColor":colors[1],
             }
     try:
         if oferta == "Común - Primaria de 7 años":
