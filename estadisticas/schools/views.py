@@ -67,7 +67,7 @@ options_capacidades={
                                                     "col_name_l_ext": "extraer", 
                                                     "table_name_m":"dech.capacidad_secundaria_matematica",
                                                     "table_name_m_cua":"dech.capacidad_secundaria_cua_matematica",
-                                                    "col_name_m_rc": "reconocimientos_de_conceptos",
+                                                    "col_name_m_rc": "reconocimiento_de_conceptos",
                                                     "col_name_m_com": "comunicacion",
                                                     "col_name_m_rs": "resolucion_de_situacion",
                                                     },
@@ -90,7 +90,7 @@ options_capacidades={
                                         "col_name_l_ext": "extraer", 
                                         "table_name_m":"dech.capacidad_primaria_matematica",
                                         "table_name_m_cua":"dech.capacidad_primaria_cua_matematica",
-                                        "col_name_m_rc": "reconocimientos_de_conceptos",
+                                        "col_name_m_rc": "reconocimiento_de_conceptos",
                                         "col_name_m_com": "comunicacion",
                                         "col_name_m_rs": "resolucion_de_situacion",
                                         },
@@ -129,27 +129,27 @@ def performance_chart(request,oferta=None):
     anexo,oferta = oferta.split(" | ")
     cueanexo = request.user.username + anexo
     datasets = []
-    table_name_m = "table_name_m"
-    table_name_l = "table_name_l"
-    table_name_cn = "table_name_cn"
-    table_name_cs = "table_name_cs"
-    
+    table_name_m = options_desempenio.get(oferta).get('table_name_m')
+    table_name_l = options_desempenio.get(oferta).get('table_name_l')
+    table_name_cn = options_desempenio.get(oferta).get('table_name_cn')
+    table_name_cs = options_desempenio.get(oferta).get('table_name_cs')
+
 
     if cueanexo_agrupado(cueanexo):
-        table_name_m = "table_name_m"+"_cua"
-        table_name_l = "table_name_l"+"_cua"
-        table_name_cn = "table_name_cn"+"_cua"
-        table_name_cs = "table_name_cs"+"_cua"
+        table_name_m = options_desempenio.get(oferta).get('table_name_m_cua')
+        table_name_l = options_desempenio.get(oferta).get('table_name_l_cua')
+        table_name_cn = options_desempenio.get(oferta).get('table_name_cn_cua')
+        table_name_cs = options_desempenio.get(oferta).get('table_name_cs_cua')
         cueanexo = 2200000
-
-    try:
+    
+    # try:
         
-        desempenio_math = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get(table_name_m),options_desempenio.get(oferta).get("col_name_m")))
-        desempenio_lengua = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get(table_name_l),options_desempenio.get(oferta).get("col_name_l")))
-        desempenio_cs = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get(table_name_cn),options_desempenio.get(oferta).get("col_name_cn")))
-        desempenio_cn = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_desempenio.get(oferta).get(table_name_cs),options_desempenio.get(oferta).get("col_name_cs")))
-    except:
-        return JsonResponse({})
+    desempenio_math = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name_m,options_desempenio.get(oferta).get("col_name_m")))
+    desempenio_lengua = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name_l,options_desempenio.get(oferta).get("col_name_l")))
+    desempenio_cn = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name_cn,options_desempenio.get(oferta).get("col_name_cn")))
+    desempenio_cs = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name_cs,options_desempenio.get(oferta).get("col_name_cs")))
+    # except:
+    #     return JsonResponse({})
     
 
     for i in range(4):
@@ -180,6 +180,15 @@ def total_score_chart(request,oferta=None):
     anexo,oferta = oferta.split(" | ")
     cueanexo = request.user.username + anexo
     datasets = []
+    table_name_prim="_primaria"
+    table_name_sec="_secundaria"
+    table_name=""
+
+    if cueanexo_agrupado(cueanexo):
+        table_name_prim+='_cua'
+        table_name_sec+='_cua'
+        cueanexo = 2200000
+
     data = {
         "labels": ["Matemática","Lengua","Ciencias Naturales","Ciencias Sociales"],
         "datasets": datasets
@@ -192,21 +201,21 @@ def total_score_chart(request,oferta=None):
             }
     try:
         if oferta == "Común - Primaria de 7 años":
-            total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje_primaria where cueanexo = '{}'".format(cueanexo))
-
-            data_format["data"].append(total_score[0].pt_m)
-            data_format["data"].append(total_score[0].pt_l)
-            data_format["data"].append(total_score[0].pt_cn)
-            data_format["data"].append(total_score[0].pt_cs)
+            table_name = table_name_prim
 
         else:
-            total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje_secundaria where cueanexo = '{}'".format(cueanexo))
-            data_format["data"].append(total_score[0].pt_m)
-            data_format["data"].append(total_score[0].pt_l)
-            data_format["data"].append(total_score[0].pt_cn)
-            data_format["data"].append(total_score[0].pt_cs)
+            table_name = table_name_sec
+
+        total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje{} where cueanexo = '{}'".format(table_name,cueanexo))
+        
+
     except:
         return JsonResponse({})
+    
+    data_format["data"].append(total_score[0].pt_m)
+    data_format["data"].append(total_score[0].pt_l)
+    data_format["data"].append(total_score[0].pt_cn)
+    data_format["data"].append(total_score[0].pt_cs)
 
     datasets.append(data_format)
     
@@ -220,14 +229,21 @@ def math_ability_chart(request,oferta):
     anexo,oferta = oferta.split(" | ")
     cueanexo = request.user.username + anexo
     datasets = []
+    table_name_m = options_capacidades.get(oferta).get('table_name_m')
 
-    try:
-        
-        concepto = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_m"),options_capacidades.get(oferta).get("col_name_m_rc")))
-        comunicacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_m"),options_capacidades.get(oferta).get("col_name_m_com")))
-        resolucion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_m"),options_capacidades.get(oferta).get("col_name_m_rs")))
-    except:
-        return JsonResponse({})
+
+    if cueanexo_agrupado(cueanexo):
+        table_name_m = options_capacidades.get(oferta).get('table_name_m_cua')
+        cueanexo = 2200000
+    
+
+    # try:
+
+    concepto = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name_m,options_capacidades.get(oferta).get("col_name_m_rc")))
+    comunicacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name_m,options_capacidades.get(oferta).get("col_name_m_com")))
+    resolucion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name_m,options_capacidades.get(oferta).get("col_name_m_rs")))
+    # except:
+    #     return JsonResponse({})
     
 
     for i in range(4):
@@ -256,12 +272,18 @@ def lan_ability_chart(request,oferta):
     anexo,oferta = oferta.split(" | ")
     cueanexo = request.user.username + anexo
     datasets = []
+    table_name = options_capacidades.get(oferta).get('table_name_l')
+
+
+    if cueanexo_agrupado(cueanexo):
+        table_name = options_capacidades.get(oferta).get('table_name_l_cua')
+        cueanexo = 2200000
 
     try:
         
-        reflexion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_l"),options_capacidades.get(oferta).get("col_name_l_rye")))
-        interpretar = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_l"),options_capacidades.get(oferta).get("col_name_l_int")))
-        extraer = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_l"),options_capacidades.get(oferta).get("col_name_l_ext")))
+        reflexion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name,options_capacidades.get(oferta).get("col_name_l_rye")))
+        interpretar = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name,options_capacidades.get(oferta).get("col_name_l_int")))
+        extraer = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name,options_capacidades.get(oferta).get("col_name_l_ext")))
     except:
         return JsonResponse({})
     
@@ -292,12 +314,18 @@ def cn_ability_chart(request,oferta):
     anexo,oferta = oferta.split(" | ")
     cueanexo = request.user.username + anexo
     datasets = []
+    table_name = options_capacidades.get(oferta).get('table_name_cn')
+
+
+    if cueanexo_agrupado(cueanexo):
+        table_name = options_capacidades.get(oferta).get('table_name_cn_cua')
+        cueanexo = 2200000
 
     try:
         
-        conceptos = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cn"),options_capacidades.get(oferta).get("col_name_cn_rc")))
-        comunicacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cn"),options_capacidades.get(oferta).get("col_name_cn_com")))
-        situacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cn"),options_capacidades.get(oferta).get("col_name_cn_as")))
+        conceptos = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name,options_capacidades.get(oferta).get("col_name_cn_rc")))
+        comunicacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name,options_capacidades.get(oferta).get("col_name_cn_com")))
+        situacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name,options_capacidades.get(oferta).get("col_name_cn_as")))
     except:
         return JsonResponse({})
     
@@ -328,12 +356,19 @@ def cs_ability_chart(request,oferta):
     cueanexo = request.user.username + anexo
     datasets = []
 
+    table_name = options_capacidades.get(oferta).get('table_name_cs')
+
+
+    if cueanexo_agrupado(cueanexo):
+        table_name = options_capacidades.get(oferta).get('table_name_cs_cua')
+        cueanexo = 2200000
+
     try:
         
-        fuente = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cs"),options_capacidades.get(oferta).get("col_name_cs_if")))
-        concepto = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cs"),options_capacidades.get(oferta).get("col_name_cs_rc")))
-        situacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cs"),options_capacidades.get(oferta).get("col_name_cs_as")))
-        hechos = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,options_capacidades.get(oferta).get("table_name_cs"),options_capacidades.get(oferta).get("col_name_cs_hyd")))
+        fuente = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name,options_capacidades.get(oferta).get("col_name_cs_if")))
+        concepto = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name,options_capacidades.get(oferta).get("col_name_cs_rc")))
+        situacion = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name,options_capacidades.get(oferta).get("col_name_cs_as")))
+        hechos = DechDesempenio.objects.using("detch").raw("select * from dech.desempenio('{}','{}','{}')".format(cueanexo,table_name,options_capacidades.get(oferta).get("col_name_cs_hyd")))
     except:
         return JsonResponse({})
     
@@ -381,6 +416,10 @@ def participation_chart(request,oferta):
         nivel = "primaria"
     else:
         nivel = "secundaria"
+    
+    if cueanexo_agrupado(cueanexo):
+        nivel+="_cua"
+        cueanexo = 2200000
     
     participation = Participation.objects.using("detch").raw("select * from dech.participacion_{} where cueanexo = '{}'".format(nivel,cueanexo))
     
