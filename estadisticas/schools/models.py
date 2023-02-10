@@ -43,3 +43,7 @@ class DechTotalScore(models.Model):
 class Participation(models.Model):
     class Meta:
         managed= False
+
+class AgrupacionCueanexos(models.Model):
+    class Meta:
+        managed= False

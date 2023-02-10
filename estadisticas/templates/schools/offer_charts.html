@@ -3,14 +3,16 @@
 
 
 {% block content %}
+
 <div id="select-oferta" class="container text-center mt-5">
     <select class="form-select w-50 mx-auto" aria-label="Default select example">
-        <option selected>Seleccione una oferta</option>
+        <option selected value="">Seleccione una oferta</option>
         {% for offer in school_offers%}
         <option value="{{offer.anexo}} | {{offer.oferta}}"> Anexo {{offer.anexo}} | {{offer.oferta}}</option>
         {% endfor %}
     </select>
     <h1 class="mt-5">{{user.offer_set.first.nom_est}}</h1>
+
 </div>
 
 
@@ -27,6 +29,42 @@
         var main = document.createElement("div");
         main.id = "main";
         main.className = "container";
+
+        var datos = [
+            { nivel: 'Nivel 1', descripcion: 'Por debajo del básico', color: 'rgba(128, 139, 150,0.7)' },
+            { nivel: 'Nivel 2', descripcion: 'Básico', color: 'rgba(52, 152, 219,0.7)' },
+            { nivel: 'Nivel 3', descripcion: 'Satisfactorio', color: 'rgba(72, 201, 176,0.7)' },
+            { nivel: 'Nivel 4', descripcion: 'Avanzado', color: 'rgba(88, 214, 141 ,0.7)' }
+        ];
+
+        var tabla = document.createElement('table');
+        tabla.classList.add('table','text-center','mt-5','table-bordered','border-dark','w-75','mx-auto');
+
+        var tbody = document.createElement('tbody');
+        tbody.classList.add('border-dark');
+
+        for (var i = 0; i < datos.length; i++) {
+            var tr = document.createElement('tr');
+
+            var th = document.createElement('th');
+            th.setAttribute('scope', 'row');
+            th.textContent = datos[i].nivel;
+            tr.appendChild(th);
+
+            var td1 = document.createElement('td');
+            td1.textContent = datos[i].descripcion;
+            tr.appendChild(td1);
+
+            var td2 = document.createElement('td');
+            td2.style.backgroundColor = datos[i].color;
+            td2.style.width = '80px';
+            tr.appendChild(td2);
+
+            tbody.appendChild(tr);
+        }
+
+        tabla.appendChild(tbody);
+
 
         var canvas0 = document.createElement("canvas");
         canvas0.id = "participacion";
@@ -58,14 +96,16 @@
         canvas6.className = "mt-5";
 
 
-
         main.appendChild(canvas0);
         main.appendChild(canvas1);
+        main.appendChild(tabla);
         main.appendChild(canvas2);
         main.appendChild(canvas3);
         main.appendChild(canvas4);
         main.appendChild(canvas5);
         main.appendChild(canvas6);
+        
+
 
         document.body.appendChild(main);
 
@@ -89,7 +129,7 @@
                                     callback: function (value, index, values) {
                                         return value * 100 + '%';
                                     },
-                                    fontSize:18
+                                    fontSize: 18
                                 },
                             }], xAxes: [{
                                 ticks: {
@@ -124,7 +164,7 @@
                                     size: 20
                                 },
                                 formatter: function (value) {
-                                    return value * 100 + '%';
+                                    return (value * 100).toFixed(2) + '%';
                                 }
                             }
                         }
@@ -222,7 +262,7 @@
                                     size: 20
                                 },
                                 formatter: function (value) {
-                                    return value * 100 + '%';
+                                    return (value * 100).toFixed(2) + '%';
                                 }
                             }
                         }
@@ -278,7 +318,7 @@
                                     size: 20
                                 },
                                 formatter: function (value) {
-                                    return value * 100 + '%';
+                                    return (value * 100).toFixed(2) + '%';
                                 }
                             }
                         }
@@ -334,7 +374,7 @@
                                     size: 20
                                 },
                                 formatter: function (value) {
-                                    return value * 100 + '%';
+                                    return (value * 100).toFixed(2) + '%';
                                 }
                             }
                         }
@@ -390,7 +430,7 @@
                                     size: 20
                                 },
                                 formatter: function (value) {
-                                    return value * 100 + '%';
+                                    return (value * 100).toFixed(2) + '%';
                                 }
                             }
                         }
@@ -418,7 +458,7 @@
                                         return value * 100 + '%';
                                     }
                                 },
-                                display:false
+                                display: false
                             }]
                         },
                         title: {
