@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
+from django.http import JsonResponse,Http404
 from django.contrib.auth.decorators import login_required
 
 from users.models import User
@@ -99,8 +99,8 @@ options_capacidades={
 
 colors = [
         'rgba(128, 139, 150,0.7)',
+        'rgba(41, 128, 185 ,0.7)',
         'rgba(52, 152, 219,0.7)',
-        'rgba(72, 201, 176,0.7)',
         'rgba(88, 214, 141  ,0.7)',
         ]
 
@@ -118,7 +118,11 @@ class OfferSelectionView(LoginRequiredMixin,ListView):
     login_url = '/'
     
     def get_queryset(self):
-        return User.objects.get(username=self.request.user.username).offer_set.values('anexo','oferta')
+        try:
+            return User.objects.get(username=self.request.user.username).offer_set.values('anexo','oferta')
+        except:
+            raise Http404("No se encontró la oferta.")
+
     
 # añadir login required y solo metodo get
 @login_required
@@ -207,18 +211,15 @@ def total_score_chart(request,oferta=None):
             table_name = table_name_sec
 
         total_score = DechTotalScore.objects.using("detch").raw("select id,pt_m,pt_l,pt_cn,pt_cs from dech.puntaje{} where cueanexo = '{}'".format(table_name,cueanexo))
-        
+        data_format["data"].append(total_score[0].pt_m)
+        data_format["data"].append(total_score[0].pt_l)
+        data_format["data"].append(total_score[0].pt_cn)
+        data_format["data"].append(total_score[0].pt_cs)
+        datasets.append(data_format)
 
     except:
         return JsonResponse({})
-    
-    data_format["data"].append(total_score[0].pt_m)
-    data_format["data"].append(total_score[0].pt_l)
-    data_format["data"].append(total_score[0].pt_cn)
-    data_format["data"].append(total_score[0].pt_cs)
 
-    datasets.append(data_format)
-    
     return JsonResponse(data)
 
 @login_required
@@ -420,12 +421,45 @@ def participation_chart(request,oferta):
     if cueanexo_agrupado(cueanexo):
         nivel+="_cua"
         cueanexo = 2200000
+
+    try:
+        participation = Participation.objects.using("detch").raw("select * from dech.participacion_{} where cueanexo = '{}'".format(nivel,cueanexo))
+        
+        data_format["data"].append(participation[0].porc_participacion)
+        data_format["data"].append(participation[0].porc_no_participacion)
+
+        datasets.append(data_format)
+    except:
+        return JsonResponse({})
     
+    return JsonResponse(data)
+
+@login_required
+def full_participation(request,oferta):
+    if not oferta:
+        return JsonResponse({})
+    
+    anexo,oferta = oferta.split(" | ")
+    cueanexo = request.user.username + anexo
+    datasets = []
+    nivel=""
+    data ={}
+
+    if oferta == "Común - Primaria de 7 años":
+        nivel = "primaria"
+    else:
+        nivel = "secundaria"
+    
+    if cueanexo_agrupado(cueanexo):
+        nivel+="_cua"
+        cueanexo = 2200000
+
+    # try:
     participation = Participation.objects.using("detch").raw("select * from dech.participacion_{} where cueanexo = '{}'".format(nivel,cueanexo))
     
-    data_format["data"].append(participation[0].porc_participacion)
-    data_format["data"].append(participation[0].porc_no_participacion)
+    data["full_participation"] = participation[0].participacion
 
-    datasets.append(data_format)
-    
+    # except:
+    #     return JsonResponse(data)
+
     return JsonResponse(data)

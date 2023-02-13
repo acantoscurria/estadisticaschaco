@@ -32,13 +32,13 @@
 
         var datos = [
             { nivel: 'Nivel 1', descripcion: 'Por debajo del básico', color: 'rgba(128, 139, 150,0.7)' },
-            { nivel: 'Nivel 2', descripcion: 'Básico', color: 'rgba(52, 152, 219,0.7)' },
-            { nivel: 'Nivel 3', descripcion: 'Satisfactorio', color: 'rgba(72, 201, 176,0.7)' },
+            { nivel: 'Nivel 2', descripcion: 'Básico', color: 'rgba(41, 128, 185,0.7)' },
+            { nivel: 'Nivel 3', descripcion: 'Satisfactorio', color: 'rgba(52, 152, 219,0.7)' },
             { nivel: 'Nivel 4', descripcion: 'Avanzado', color: 'rgba(88, 214, 141 ,0.7)' }
         ];
 
         var tabla = document.createElement('table');
-        tabla.classList.add('table','text-center','mt-5','table-bordered','border-dark','w-75','mx-auto');
+        tabla.classList.add('table', 'text-center', 'mt-5', 'table-bordered', 'border-dark', 'w-75', 'mx-auto');
 
         var tbody = document.createElement('tbody');
         tbody.classList.add('border-dark');
@@ -64,6 +64,41 @@
         }
 
         tabla.appendChild(tbody);
+
+        var tabla2 = document.createElement("table");
+        tabla2.classList.add("table", "table-bordered", 'text-center', "border", "border-2", "border-dark");
+
+        var thead1 = document.createElement("thead");
+        var tr1 = document.createElement("tr");
+
+        var th1 = document.createElement("th");
+        th1.scope = "col";
+        th1.textContent = "Puntaje total de la evaluación";
+        tr1.appendChild(th1);
+
+        var th2 = document.createElement("th");
+        th2.scope = "col";
+        th2.textContent = "Puntaje promedio";
+        tr1.appendChild(th2);
+
+        thead1.appendChild(tr1);
+        tabla2.appendChild(thead1);
+
+        var tbody1 = document.createElement("tbody");
+        var tr2 = document.createElement("tr");
+
+        var td1 = document.createElement("td");
+        td1.scope = "row";
+        td1.textContent = "1000";
+        tr2.appendChild(td1);
+
+        var td2 = document.createElement("td");
+        td2.id = "full-participation";
+        td2.textContent = "";
+        tr2.appendChild(td2);
+
+        tbody1.appendChild(tr2);
+        tabla2.appendChild(tbody1);
 
 
         var canvas0 = document.createElement("canvas");
@@ -97,6 +132,7 @@
 
 
         main.appendChild(canvas0);
+        main.appendChild(tabla2);
         main.appendChild(canvas1);
         main.appendChild(tabla);
         main.appendChild(canvas2);
@@ -104,7 +140,7 @@
         main.appendChild(canvas4);
         main.appendChild(canvas5);
         main.appendChild(canvas6);
-        
+
 
 
         document.body.appendChild(main);
@@ -481,6 +517,14 @@
                         }
                     }
                 });
+            }
+        });
+
+        $.ajax({
+            url: `/school/full-participation/${event.target.value}`,
+            type: 'GET',
+            success: function (data) {
+                $("#full-participation").html(data.full_participation);
             }
         });
 

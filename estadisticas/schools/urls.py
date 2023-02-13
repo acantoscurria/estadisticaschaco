@@ -8,7 +8,8 @@ from .views import (
     lan_ability_chart,
     cn_ability_chart,
     cs_ability_chart,
-    participation_chart
+    participation_chart,
+    full_participation
     )
 
 app_name = 'schools'
@@ -22,4 +23,5 @@ urlpatterns = [
     path("cn-ability-chart/<oferta>",cn_ability_chart,name="cn-ability-chart"),
     path("cs-ability-chart/<oferta>",cs_ability_chart,name="cs-ability-chart"),
     path("participation-chart/<oferta>",participation_chart,name="participation-chart"),
+    path("full-participation/<oferta>",full_participation,name="full-participation"),
 ]
