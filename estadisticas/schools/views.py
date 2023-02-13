@@ -441,25 +441,27 @@ def full_participation(request,oferta):
     
     anexo,oferta = oferta.split(" | ")
     cueanexo = request.user.username + anexo
-    datasets = []
-    nivel=""
+    table_name_prim="_primaria"
+    table_name_sec="_secundaria"
+    table_name=""
     data ={}
-
-    if oferta == "Común - Primaria de 7 años":
-        nivel = "primaria"
-    else:
-        nivel = "secundaria"
     
     if cueanexo_agrupado(cueanexo):
-        nivel+="_cua"
+        table_name_prim+='_cua'
+        table_name_sec+='_cua'
         cueanexo = 2200000
 
-    # try:
-    participation = Participation.objects.using("detch").raw("select * from dech.participacion_{} where cueanexo = '{}'".format(nivel,cueanexo))
-    
-    data["full_participation"] = participation[0].participacion
+    if oferta == "Común - Primaria de 7 años":
+        table_name = table_name_prim
 
-    # except:
-    #     return JsonResponse(data)
+    else:
+        table_name = table_name_sec
+
+    try:
+        total_score = DechTotalScore.objects.using("detch").raw("select id,puntaje_promedio from dech.puntaje{} where cueanexo = '{}'".format(table_name,cueanexo))
+        data["full_participation"] = total_score[0].puntaje_promedio
+
+    except:
+        return JsonResponse(data)
 
     return JsonResponse(data)
