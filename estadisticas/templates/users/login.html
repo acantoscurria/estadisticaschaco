@@ -14,11 +14,28 @@
 
 {% block content %}
 
+
+
+
 <div class="section">
 	<div class="container">
 		<div class="row full-height justify-content-center">
 			<div class="col-12 text-center align-self-center py-5">
 				<div class="section pb-5 pt-5 pt-sm-2 text-center">
+					{% if error_register_form %}
+
+					<div class="alert alert-danger mt5 w-50 mx-auto text-center" role="alert">
+						{{error_register_form}}
+					</div>
+					{% endif %}
+
+					{% if message_register_form %}
+
+					<div class="alert alert-success mt5 w-50 mx-auto text-center" role="alert">
+						{{message_register_form}}
+					</div>
+					{% endif %}
+		
 					<h6 class="mb-0 pb-3"><span>Ingresar </span><span>Registrarse</span></h6>
 					<input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
 					<label for="reg-log"></label>
@@ -57,6 +74,7 @@
 									<div class="section text-center">
 										<h4 class="mb-4 pb-3">Registrarse</h4>
 										<form action="{% url 'users:register' %}" method="POST">
+											{% csrf_token %}
 											<div class="form-group">
 												<input type="text" name="username" class="form-style"
 													placeholder="Ingrese su CUE" id="username" autocomplete="on">
@@ -64,7 +82,8 @@
 											</div>
 											<div class="form-group mt-2">
 												<input type="password" name="password" class="form-style"
-													placeholder="Ingresa tu contraseña" id="password" autocomplete="off">
+													placeholder="Ingresa tu contraseña" id="password"
+													autocomplete="off">
 												<i class="input-icon uil uil-lock-alt"></i>
 											</div>
 											<div class="form-group mt-2">
@@ -73,7 +92,7 @@
 													autocomplete="off">
 												<i class="input-icon uil uil-lock-alt"></i>
 											</div>
-											<a href="#" class="btn mt-4">Enviar</a>
+											<button type="submit" class="btn mt-4">Enviar</button>
 										</form>
 									</div>
 								</div>

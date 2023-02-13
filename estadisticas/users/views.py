@@ -1,5 +1,5 @@
 
-from django.shortcuts import render,reverse
+from django.shortcuts import render,reverse,redirect
 from django.contrib.auth.views import LogoutView,LoginView
 from django import forms
 from django.contrib.auth import authenticate
@@ -59,13 +59,50 @@ def info_user(request):
     
 
 def register(request):
-        try:
-            user = User.objects.get(username=request.POST.username)
-            if request.POST.password == request.POST.password_confirm:
-                user.set_password(request.POST.password)
-        except:
-            # aca hay que mandar un error form
-            return JsonResponse({'message':"El CUE ingresado no existe o no se encuentra dentro de la base DECH"})
+
+    if request.method == "POST":
+            # Obtiene los datos del formulario
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+            password_confirm = request.POST.get("password_confirm")
+
+            if not username:
+                return render(
+                    request=request,
+                    template_name="users/login.html",
+                    context={"error_register_form":"Error en registro: El usuario no puede estar vacío."}
+                    )
+
+            if password != password_confirm:
+                return render(
+                    request=request,
+                    template_name="users/login.html",
+                    context={"error_register_form":"Error en registro: Las contraseñas no coinciden"}
+                    )
+
+            user = User.objects.filter(username=username).first()
+            if not user:
+                return render(
+                    request=request,
+                    template_name="users/login.html",
+                    context={"error_register_form":"Error en registro: El CUE ingresado no existe."}
+                    )
+            
+            if user.password_entered:
+                return render(
+                    request=request,
+                    template_name="users/login.html",
+                    context={"error_register_form":"Error en registro: El usuario se encuentra registrado. Si no recuerda la contraseña deberá comunicarse con el Dpto. de estadísticas educativas."}
+                    )
+            
+            user.set_password(password)
+            user.set_password = True
+            user.save()
+            return render(
+                request=request,
+                template_name="users/login.html",
+                context={"message_register_form":"El usuario fue creado exitosamente, ya puedes ingresar."}
+                )
+            
 
 
-        return JsonResponse({"cue":user.username,"nom_est":user.nom_est,})
