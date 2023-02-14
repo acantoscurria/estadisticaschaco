@@ -48,16 +48,6 @@ class CustomLoginView(UserPassesTestMixin,LoginView):
         return not self.request.user.is_authenticated
     
 
-def info_user(request):
-    if request.POST.username:
-        try:
-            user = User.objects.get(username=request.POST.username)
-        except:
-            return JsonResponse({'message':"El CUE ingresado no existe o no se encuentra dentro de la base DECH"})
-        
-        return JsonResponse({"cue":user.username,"nom_est":user.nom_est,})
-    
-
 def register(request):
 
     if request.method == "POST":
@@ -96,7 +86,7 @@ def register(request):
                     )
             
             user.set_password(password)
-            user.set_password = True
+            user.password_entered = True
             user.save()
             return render(
                 request=request,
