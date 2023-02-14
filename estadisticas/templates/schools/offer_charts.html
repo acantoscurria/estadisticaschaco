@@ -34,40 +34,10 @@
         main.id = "main";
         main.className = "container";
 
-        var datos = [
-            { nivel: 'Nivel 1', descripcion: 'Por debajo del básico', color: 'rgba(128, 139, 150,0.7)' },
-            { nivel: 'Nivel 2', descripcion: 'Básico', color: 'rgba(26, 82, 118 ,0.7)' },
-            { nivel: 'Nivel 3', descripcion: 'Satisfactorio', color: 'rgba(52, 152, 219,0.7)' },
-            { nivel: 'Nivel 4', descripcion: 'Avanzado', color: 'rgba(88, 214, 141 ,0.7)' }
-        ];
+        var tabla_img = document.createElement('img');
+        tabla_img.src = '{% static "images/tabla.png" %}'
+        tabla_img.classList.add("mx-auto","mt-5","img-fluid")
 
-        var tabla = document.createElement('table');
-        tabla.classList.add('table', 'text-center', 'mt-5', 'table-bordered', 'border-dark', 'w-75', 'mx-auto');
-
-        var tbody = document.createElement('tbody');
-        tbody.classList.add('border-dark');
-
-        for (var i = 0; i < datos.length; i++) {
-            var tr = document.createElement('tr');
-
-            var th = document.createElement('th');
-            th.setAttribute('scope', 'row');
-            th.textContent = datos[i].nivel;
-            tr.appendChild(th);
-
-            var td1 = document.createElement('td');
-            td1.textContent = datos[i].descripcion;
-            tr.appendChild(td1);
-
-            var td2 = document.createElement('td');
-            td2.style.backgroundColor = datos[i].color;
-            td2.style.width = '80px';
-            tr.appendChild(td2);
-
-            tbody.appendChild(tr);
-        }
-
-        tabla.appendChild(tbody);
 
         var tabla2 = document.createElement("table");
         tabla2.classList.add("table", "table-bordered", 'text-center', 'mx-auto', "border", "border-2", "border-dark","w-50");
@@ -107,7 +77,7 @@
 
         var canvas0 = document.createElement("canvas");
         canvas0.id = "participacion";
-        canvas0.className = "mt-5 mb-4";
+        canvas0.className = "mt-5 mb-4 w-100";
 
         var canvas1 = document.createElement("canvas");
         canvas1.id = "Puntaje";
@@ -138,7 +108,7 @@
         main.appendChild(canvas0);
         main.appendChild(tabla2);
         main.appendChild(canvas1);
-        main.appendChild(tabla);
+        main.appendChild(tabla_img);
         main.appendChild(canvas2);
         main.appendChild(canvas3);
         main.appendChild(canvas4);

@@ -260,7 +260,7 @@ def math_ability_chart(request,oferta):
         datasets.append(data_format)
 
     data = {
-        "labels": ["Reconocimiento de Conceptos","Comunicación","Resolución de Situación"],
+        "labels": ["Reconocimiento de Concepto","Comunicación","Resolución de Situación"],
         "datasets": datasets
     }
     return JsonResponse(data)
@@ -302,7 +302,7 @@ def lan_ability_chart(request,oferta):
         datasets.append(data_format)
 
     data = {
-        "labels": ["Extraer","Interpretar","Reflexión y Evaluación"],
+        "labels": ["Extraer","Interpretar","Reflexionar y Evaluar"],
         "datasets": datasets
     }
     return JsonResponse(data)
@@ -344,7 +344,7 @@ def cn_ability_chart(request,oferta):
         datasets.append(data_format)
 
     data = {
-        "labels": ["Reconocimiento de Conceptos","Comunicación","Análisis de Situación"],
+        "labels": ["Reconocimiento de Concepto","Comunicación","Análisis de Situación"],
         "datasets": datasets
     }
     return JsonResponse(data)
