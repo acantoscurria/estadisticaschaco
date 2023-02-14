@@ -26,15 +26,13 @@
 
 </head>
 
-<body>
+<body class="container-fluid">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-
-      {% if user.is_authenticated %}
-      <a class="navbar-brand" href="{% url 'schools:offer-selection' %}">Navbar</a>
-      {% else %}
-      <a class="navbar-brand" href="{% url 'users:custom-login' %}">Navbar</a>
-      {% endif %}
+      <img class="d-none d-lg-flex" src="{% static 'images/info_educativa.png' %}" alt="Información Educativa" width="300" height="auto">
+      <img class="ml-5 d-none d-lg-flex" src="{% static 'images/planeamiento.png' %}" alt="Planeamiento" width="auto" height="75">
+      <img src="{% static 'images/min_educacion.png' %}" alt="Min. Educación" width="auto" height="75">
+      <img class="d-none d-lg-flex" src="{% static 'images/evaluacion_educativa.png' %}" alt="Evaluación Educativa" width="auto" height="100">
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,29 +42,17 @@
         <ul class="navbar-nav mb-2 mb-lg-0 ">
           {% if user.is_authenticated %}
           <li class="nav-item mt-1 mr-4">Iniciaste Sesión como: {{user.username}} | </li>
-          <a href="{% url 'users:logout' %}" class="text-decoration-none"><li class="nav-item mt-1" ><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</li></a>
+          <a href="{% url 'users:logout' %}" class="text-decoration-none"><li class="nav-item mt-1" >
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión</li></a>
           {% endif %}
-          <!-- <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li> -->
+
         </ul>
 
       </div>
     </div>
   </nav>
 
-  <!-- <div class="position-static mt-3 mb-3 row">
 
-    {% if user.is_authenticated %}
-
-    <p class="text-dark fs-3  col-9 ml-2"> Iniciaste Sesión como: {{user.username}} </p>
-
-    <a class="text-dark fs-3  col-2 text-right mr-1" href="{% url 'users:logout' %}">Salir</a>
-    {% else %}
-    No estás logueado
-    {% endif %}
-
-  </div> -->
   {% block content %}
   <p>Este es un texto base</p>
   {% endblock content %}

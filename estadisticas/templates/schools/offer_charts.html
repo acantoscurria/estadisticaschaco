@@ -13,11 +13,15 @@
     </select>
     <h1 class="mt-5">{{user.offer_set.first.nom_est}}</h1>
 
+    <button type="button" class="btn btn-outline-secondary" onclick="imprimir()">Imprimir pantalla</button>
+
 </div>
 
 
 <script>
-
+    function imprimir(){
+        window.print()
+    }
 
     const selectElement = $('#select-oferta');
 
@@ -66,7 +70,7 @@
         tabla.appendChild(tbody);
 
         var tabla2 = document.createElement("table");
-        tabla2.classList.add("table", "table-bordered", 'text-center', "border", "border-2", "border-dark");
+        tabla2.classList.add("table", "table-bordered", 'text-center', 'mx-auto', "border", "border-2", "border-dark","w-50");
 
         var thead1 = document.createElement("thead");
         var tr1 = document.createElement("tr");
@@ -181,7 +185,7 @@
                                     if (label) {
                                         label += ': ';
                                     }
-                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
+                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2);
                                     return label;
                                 }
                             }
@@ -201,7 +205,7 @@
                                 },
                                 formatter: function (value) {
                                     return (value * 100).toFixed(2) + '%';
-                                }
+                                },
                             }
                         }
                     }
@@ -224,12 +228,19 @@
                             yAxes: [{
                                 ticks: {
                                     beginAtZero: true,
+                                    
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize:18,
                                 }
                             }]
                         },
                         title: {
                             display: true,
-                            text: 'Puntaje Total',
+                            text: 'Puntaje Total General',
                             fontSize: 48
                         },
 
@@ -269,6 +280,12 @@
                                     callback: function (value, index, values) {
                                         return value * 100 + '%';
                                     }
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize:18,
                                 }
                             }]
                         },
@@ -326,6 +343,12 @@
                                         return value * 100 + '%';
                                     }
                                 }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize:18,
+                                }
                             }]
                         },
                         tooltips: {
@@ -381,6 +404,12 @@
                                     callback: function (value, index, values) {
                                         return value * 100 + '%';
                                     }
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize: 18,
                                 }
                             }]
                         },
@@ -438,6 +467,12 @@
                                         return value * 100 + '%';
                                     }
                                 }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize:18
+                                }
                             }]
                         },
                         tooltips: {
@@ -493,6 +528,13 @@
                                     callback: function (value, index, values) {
                                         return value * 100 + '%';
                                     }
+                                },
+                                display: false
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize: 18
                                 },
                                 display: false
                             }]
