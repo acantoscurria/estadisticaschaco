@@ -28,27 +28,13 @@
   100% { transform: rotate(360deg); }
 }
 
-.table-color-gray {
-  background-color: rgba(128, 139, 150,0.7) !important;
-  width: 80px;
-  height: 50px;
-  }
-
-.table-color-dark-blue {
-    background-color: rgba(26, 82, 118 ,0.7) !important;
-    width: 80px;
-    height: 50px;
-  }
 
 
-.table-color-light-blue {
-    background-color: rgba(52, 152, 219,0.7) !important;
-    width: 80px;
-    height: 50px;
+@media print {
+  /* Aquí irían tus reglas CSS específicas para imprimir */
+  canvas{
+    width: 75vw !important;
+    height: auto !important;
+    margin: 0 auto;
   }
-
-.table-color-light-green {
-    background-color: rgba(88, 214, 141 ,0.7) !important;
-    width: 80px;
-    height: 50px;
-  }
+}

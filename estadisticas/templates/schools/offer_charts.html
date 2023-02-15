@@ -41,6 +41,7 @@
         table_title.style.color = '#666666'
         table_title.style.fontSize = '48px'
         table_title.style.fontFamily = 'Arial'
+        table_title.style.fontWeight = 'bold';
 
         var tabla_img = document.createElement('img');
         tabla_img.src = '{% static "images/tabla.png" %}'
@@ -48,7 +49,7 @@
 
 
         var tabla2 = document.createElement("table");
-        tabla2.classList.add("table", "table-bordered", 'text-center', 'mx-auto', "border", "border-2", "border-dark","w-50");
+        tabla2.classList.add("table", "table-bordered", 'text-center', 'mx-auto', "border", "border-2", "border-dark","w-75");
 
         var thead1 = document.createElement("thead");
         var tr1 = document.createElement("tr");
@@ -85,7 +86,8 @@
 
         var canvas0 = document.createElement("canvas");
         canvas0.id = "participacion";
-        canvas0.className = "mt-5 mb-4 w-100";
+        canvas0.className = "mt-5 mb-4";
+
 
         var canvas1 = document.createElement("canvas");
         canvas1.id = "Puntaje";
@@ -219,7 +221,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'Puntaje Total General',
+                            text: 'Puntaje Total Por Área',
                             fontSize: 48
                         },
 
