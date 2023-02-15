@@ -4,6 +4,7 @@ volumes:
   production_postgres_data: {}
   production_postgres_data_backups: {}
   production_traefik: {}
+  django_static_volume: {}
 
 services:
   django:
@@ -19,6 +20,8 @@ services:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
     command: /start
+    volumes:
+      - django_static_volume:/app/staticfiles
 
   postgres:
     build:
