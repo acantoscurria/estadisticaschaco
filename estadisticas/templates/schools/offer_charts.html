@@ -35,6 +35,13 @@
         main.id = "main";
         main.className = "container";
 
+        var table_title = document.createElement("h1")
+        table_title.textContent = "Puntaje Total";
+        table_title.classList.add("mx-auto","text-center")
+        table_title.style.color = '#666666'
+        table_title.style.fontSize = '48px'
+        table_title.style.fontFamily = 'Arial'
+
         var tabla_img = document.createElement('img');
         tabla_img.src = '{% static "images/tabla.png" %}'
         tabla_img.classList.add("mx-auto","mt-5","img-fluid")
@@ -107,6 +114,7 @@
 
 
         main.appendChild(canvas0);
+        main.appendChild(table_title);
         main.appendChild(tabla2);
         main.appendChild(canvas1);
         main.appendChild(tabla_img);

@@ -387,7 +387,7 @@ def cs_ability_chart(request,oferta):
         datasets.append(data_format)
 
     data = {
-        "labels": ["Reconocimientos de Hechos / Datos","Reconocimiento de Conceptos","Interpretación de Fuentes","Análisis de Situación"],
+        "labels": ["Reconocimientos de Hechos / Datos","Reconocimiento de Concepto","Interpretación de Fuentes","Análisis de Situación"],
         "datasets": datasets
     }
     return JsonResponse(data)

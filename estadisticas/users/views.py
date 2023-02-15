@@ -1,12 +1,9 @@
 
-from django.shortcuts import render,reverse,redirect
+from django.shortcuts import render,redirect
 from django.contrib.auth.views import LogoutView,LoginView
-from django import forms
-from django.contrib.auth import authenticate
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.http import HttpResponseRedirect,HttpResponse
-from django.contrib.auth import login as auth_login
-from django.http import JsonResponse
+from django.views.generic import RedirectView
 
 # Create your views here.
 from users.models import User
@@ -14,11 +11,11 @@ from users.models import User
 class LogoutUserView(LogoutView):
     template_name="users/login.html"
 
-class CustomLoginView(UserPassesTestMixin,LoginView):
+class CustomLoginView(LoginView):
     template_name= "users/login.html"
 
     def get_success_url(self):
-        return reverse("schools:offer-selection")  # success_url may be lazy
+        return reverse_lazy("schools:offer-selection")  # success_url may be lazy
     
     def post(self, request, *args, **kwargs):
         """
@@ -43,9 +40,11 @@ class CustomLoginView(UserPassesTestMixin,LoginView):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
-        
-    def test_func(self):
-        return not self.request.user.is_authenticated
+  
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(self.get_success_url())
+        return super().get(request, *args, **kwargs)
     
 
 def register(request):
