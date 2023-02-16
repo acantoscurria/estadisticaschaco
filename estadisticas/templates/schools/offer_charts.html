@@ -16,7 +16,11 @@
 
     <button type="button" class="btn btn-outline-secondary" onclick="imprimir()">Imprimir pantalla</button>
     <a href="{% static 'pdf/resultados_dech2022.pdf' %}" class="btn btn-outline-dark">Descargar reporte Provincial</a>
-
+    
+    <div id="preloader">
+        <div id="loader"></div>
+        <p>Cargando...</p>
+    </div>
 </div>
 
 
@@ -26,11 +30,27 @@
     }
 
     const selectElement = $('#select-oferta');
+    
+    $('#preloader').hide();
+
+    var ajaxCount = 0;
+
+    $(document).ajaxStart(function () {
+        ajaxCount++;
+        $('#preloader').show();
+    });
+
+    $(document).ajaxStop(function () {
+        ajaxCount--;
+        if (ajaxCount == 0) {
+            $('#preloader').hide();
+        }
+    });
 
     selectElement.on('change', (event) => {
 
         if (event.target.value != '') {
-
+            //$('#preloader').removeClass('hide');
             if ($("#main")) {
                 $("#main").remove();
             }
@@ -551,11 +571,11 @@
                 type: 'GET',
                 success: function (data) {
                     $("#full-participation").html(data.full_participation);
+
                 }
             });
         }
     });
-
 
 
 </script>
