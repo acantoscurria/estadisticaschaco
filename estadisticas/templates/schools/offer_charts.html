@@ -17,13 +17,79 @@
     <button type="button" class="btn btn-outline-secondary" onclick="imprimir()">Imprimir pantalla</button>
     <a href="{% static 'pdf/resultados_dech2022.pdf' %}" class="btn btn-outline-dark">Descargar reporte Provincial</a>
     
-    <div id="preloader">
-        <div id="loader"></div>
-        <p>Cargando...</p>
-    </div>
+    <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Instructivo para la lectura
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Instructivo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Interpretación de los datos
+                            </button>
+                          </h2>
+                          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body text-justify">
+                                Para interpretar correctamente los datos del Reporte, es importante tener en cuenta que la información presentada  puede referir a la escuela, al conjunto de escuelas similares o a la jurisdicción.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                              Escuelas sin reporte
+                            </button>
+                          </h2>
+                          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                            <div class="accordion-body  text-justify">
+                                Corresponde a las escuelas que no participaron o no  realizaron  la correspondiente carga de respuestas por lo tanto sólo podrán visualizar el <strong> informe jurisdiccional.</strong> 
+                            </div>
+                          </div>
+                        </div>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Escuelas similares
+                            </button>
+                          </h2>
+                          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                            <div class="accordion-body  text-justify">
+                                Se denomina Escuelas Similares aquellas unidades educativas que tengan características parecidas. <br>
+                                En este reporte se agruparon a todas las escuelas que tuvieron  menos de tres estudiantes registrados/as, 
+                                conforme con las definiciones metodológicas de DECH y a lo establecido en la Ley Nº 25.326, “Protección de los Datos Personales” artìculo Nº1 
+                                “La presente ley tiene por objeto la protección integral de los datos personales asentados en 
+                                archivos, registros, bancos de datos, u otros medios técnicos de tratamiento de datos, sean 
+                                éstos públicos, o privados destinados a dar informes, para garantizar el derecho al honor y a 
+                                la intimidad de las personas, así como también el acceso a la información que sobre las mismas 
+                                se registre, de conformidad a lo establecido en el artículo 43, párrafo tercero de la Constitución Nacional (...)”                                 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
 </div>
 
-
+<div id="preloader">
+    <div id="loader"></div>
+    <p>Cargando...</p>
+</div>
 <script>
     function imprimir() {
         window.print()
