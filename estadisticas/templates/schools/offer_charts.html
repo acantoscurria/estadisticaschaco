@@ -11,7 +11,8 @@
         <option value="{{offer.anexo}} | {{offer.oferta}}"> Anexo {{offer.anexo}} | {{offer.oferta}}</option>
         {% endfor %}
     </select>
-    <h1 class="mt-5">{{user.offer_set.first.nom_est}}</h1>
+    <h3 class="mt-5">Reporte Operativo Provincial DECH:</h3> 
+    <h4 class="mb-5">{{user.offer_set.first.nom_est}}</h2>
 
     <button type="button" class="btn btn-outline-secondary" onclick="imprimir()">Imprimir pantalla</button>
     <a href="{% static 'pdf/resultados_dech2022.pdf' %}" class="btn btn-outline-dark">Descargar reporte Provincial</a>
@@ -20,7 +21,7 @@
 
 
 <script>
-    function imprimir(){
+    function imprimir() {
         window.print()
     }
 
@@ -28,530 +29,531 @@
 
     selectElement.on('change', (event) => {
 
-        if ($("#main")) {
-            $("#main").remove();
-        }
-        var main = document.createElement("div");
-        main.id = "main";
-        main.className = "container";
+        if (event.target.value != '') {
 
-        var table_title = document.createElement("h1")
-        table_title.textContent = "Puntaje Total";
-        table_title.classList.add("mx-auto","text-center")
-        table_title.style.color = '#666666'
-        table_title.style.fontSize = '48px'
-        table_title.style.fontFamily = 'Arial'
-        table_title.style.fontWeight = 'bold';
+            if ($("#main")) {
+                $("#main").remove();
+            }
+            var main = document.createElement("div");
+            main.id = "main";
+            main.className = "container";
 
-        var tabla_img = document.createElement('img');
-        tabla_img.src = '{% static "images/tabla.png" %}'
-        tabla_img.classList.add("mx-auto","mt-5","img-fluid")
+            var table_title = document.createElement("h1")
+            table_title.textContent = "Puntaje Total";
+            table_title.classList.add("mx-auto", "text-center")
+            table_title.style.color = '#666666'
+            table_title.style.fontSize = '48px'
+            table_title.style.fontFamily = 'Arial'
+            table_title.style.fontWeight = 'bold';
 
-
-        var tabla2 = document.createElement("table");
-        tabla2.classList.add("table", "table-bordered", 'text-center', 'mx-auto', "border", "border-2", "border-dark","w-75");
-
-        var thead1 = document.createElement("thead");
-        var tr1 = document.createElement("tr");
-
-        var th1 = document.createElement("th");
-        th1.scope = "col";
-        th1.textContent = "Puntaje total de la evaluación";
-        tr1.appendChild(th1);
-
-        var th2 = document.createElement("th");
-        th2.scope = "col";
-        th2.textContent = "Puntaje promedio";
-        tr1.appendChild(th2);
-
-        thead1.appendChild(tr1);
-        tabla2.appendChild(thead1);
-
-        var tbody1 = document.createElement("tbody");
-        var tr2 = document.createElement("tr");
-
-        var td1 = document.createElement("td");
-        td1.scope = "row";
-        td1.textContent = "1000";
-        tr2.appendChild(td1);
-
-        var td2 = document.createElement("td");
-        td2.id = "full-participation";
-        td2.textContent = "";
-        tr2.appendChild(td2);
-
-        tbody1.appendChild(tr2);
-        tabla2.appendChild(tbody1);
+            var tabla_img = document.createElement('img');
+            tabla_img.src = '{% static "images/tabla.png" %}'
+            tabla_img.classList.add("mx-auto", "mt-5", "img-fluid")
 
 
-        var canvas0 = document.createElement("canvas");
-        canvas0.id = "participacion";
-        canvas0.className = "mt-5 mb-4";
+            var tabla2 = document.createElement("table");
+            tabla2.classList.add("table", "table-bordered", 'text-center', 'mx-auto', "border", "border-2", "border-dark", "w-75");
+
+            var thead1 = document.createElement("thead");
+            var tr1 = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            th1.scope = "col";
+            th1.textContent = "Puntaje total de la evaluación";
+            tr1.appendChild(th1);
+
+            var th2 = document.createElement("th");
+            th2.scope = "col";
+            th2.textContent = "Puntaje promedio";
+            tr1.appendChild(th2);
+
+            thead1.appendChild(tr1);
+            tabla2.appendChild(thead1);
+
+            var tbody1 = document.createElement("tbody");
+            var tr2 = document.createElement("tr");
+
+            var td1 = document.createElement("td");
+            td1.scope = "row";
+            td1.textContent = "1000";
+            tr2.appendChild(td1);
+
+            var td2 = document.createElement("td");
+            td2.id = "full-participation";
+            td2.textContent = "";
+            tr2.appendChild(td2);
+
+            tbody1.appendChild(tr2);
+            tabla2.appendChild(tbody1);
 
 
-        var canvas1 = document.createElement("canvas");
-        canvas1.id = "Puntaje";
-        canvas1.className = "mt-5";
-
-        var canvas2 = document.createElement("canvas");
-        canvas2.id = "Desempenio";
-        canvas2.className = "mt-5";
-
-        var canvas3 = document.createElement("canvas");
-        canvas3.id = "habilidad-matematica";
-        canvas3.className = "mt-5";
-
-        var canvas4 = document.createElement("canvas");
-        canvas4.id = "habilidad-lengua";
-        canvas4.className = "mt-5";
-
-        var canvas5 = document.createElement("canvas");
-        canvas5.id = "habilidad-cn";
-        canvas5.className = "mt-5";
+            var canvas0 = document.createElement("canvas");
+            canvas0.id = "participacion";
+            canvas0.className = "mt-5 mb-4";
 
 
-        var canvas6 = document.createElement("canvas");
-        canvas6.id = "habilidad-cs";
-        canvas6.className = "mt-5";
+            var canvas1 = document.createElement("canvas");
+            canvas1.id = "Puntaje";
+            canvas1.className = "mt-5";
+
+            var canvas2 = document.createElement("canvas");
+            canvas2.id = "Desempenio";
+            canvas2.className = "mt-5";
+
+            var canvas3 = document.createElement("canvas");
+            canvas3.id = "habilidad-matematica";
+            canvas3.className = "mt-5";
+
+            var canvas4 = document.createElement("canvas");
+            canvas4.id = "habilidad-lengua";
+            canvas4.className = "mt-5";
+
+            var canvas5 = document.createElement("canvas");
+            canvas5.id = "habilidad-cn";
+            canvas5.className = "mt-5";
 
 
-        main.appendChild(canvas0);
-        main.appendChild(table_title);
-        main.appendChild(tabla2);
-        main.appendChild(canvas1);
-        main.appendChild(tabla_img);
-        main.appendChild(canvas2);
-        main.appendChild(canvas3);
-        main.appendChild(canvas4);
-        main.appendChild(canvas5);
-        main.appendChild(canvas6);
+            var canvas6 = document.createElement("canvas");
+            canvas6.id = "habilidad-cs";
+            canvas6.className = "mt-5";
 
 
-
-        document.body.appendChild(main);
+            main.appendChild(canvas0);
+            main.appendChild(table_title);
+            main.appendChild(tabla2);
+            main.appendChild(canvas1);
+            main.appendChild(tabla_img);
+            main.appendChild(canvas2);
+            main.appendChild(canvas3);
+            main.appendChild(canvas4);
+            main.appendChild(canvas5);
+            main.appendChild(canvas6);
 
 
 
-        $.ajax({
-            url: `/school/performance-chart/${event.target.value}`,
-            type: 'GET',
-            success: function (data) {
-                console.log(data)
-                var ctx = $("#Desempenio");
-                var Desempenio = new Chart(ctx, {
-                    type: "bar",
-                    data: data,
-                    stacked: true,
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    callback: function (value, index, values) {
-                                        return value * 100 + '%';
+            document.body.appendChild(main);
+
+
+
+            $.ajax({
+                url: `/school/performance-chart/${event.target.value}`,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                    var ctx = $("#Desempenio");
+                    var Desempenio = new Chart(ctx, {
+                        type: "bar",
+                        data: data,
+                        stacked: true,
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function (value, index, values) {
+                                            return value * 100 + '%';
+                                        },
+                                        fontSize: 18
                                     },
-                                    fontSize: 18
-                                },
-                            }], xAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    fontSize: 18,
-                                },
-                            }],
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function (tooltipItem, data) {
-                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                                    if (label) {
-                                        label += ': ';
+                                }], xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        fontSize: 18,
+                                    },
+                                }],
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2);
+                                        return label;
                                     }
-                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2);
-                                    return label;
                                 }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Desempeño',
-                            fontSize: 48
-                        },
-                        plugins: {
-                            datalabels: {
+                            },
+                            title: {
                                 display: true,
-                                color: 'black',
-                                align: 'center',
-                                font: {
-                                    size: 20
-                                },
-                                formatter: function (value) {
-                                    return (value * 100).toFixed(2) + '%';
-                                },
-                            }
-                        }
-                    }
-                });
-            }
-        });
-
-        $.ajax({
-            url: `/school/total-score-chart/${event.target.value}`,
-            type: 'GET',
-            success: function (data) {
-                console.log(data)
-                var ctx = $("#Puntaje");
-                var Desempenio = new Chart(ctx, {
-                    type: "bar",
-                    data: data,
-                    stacked: false,
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    
-                                }
-                            }],
-                            xAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    fontSize:18,
-                                }
-                            }]
-                        },
-                        title: {
-                            display: true,
-                            text: 'Puntaje Total Por Área',
-                            fontSize: 48
-                        },
-
-                        plugins: {
-                            datalabels: {
-                                display: true,
-                                color: 'black',
-                                align: 'center',
-                                font: {
-                                    size: 20
-                                },
-                                formatter: function (value) {
-                                    return value;
+                                text: 'Desempeño',
+                                fontSize: 48
+                            },
+                            plugins: {
+                                datalabels: {
+                                    display: true,
+                                    color: 'black',
+                                    align: 'center',
+                                    font: {
+                                        size: 20
+                                    },
+                                    formatter: function (value) {
+                                        return (value * 100).toFixed(2) + '%';
+                                    },
                                 }
                             }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
 
-        $.ajax({
-            url: `/school/math-ability-chart/${event.target.value}`,
-            type: 'GET',
-            success: function (data) {
-                console.log(data)
-                var ctx = $("#habilidad-matematica");
-                var Desempenio = new Chart(ctx, {
-                    type: "bar",
-                    data: data,
-                    stacked: true,
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    callback: function (value, index, values) {
-                                        return value * 100 + '%';
+            $.ajax({
+                url: `/school/total-score-chart/${event.target.value}`,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                    var ctx = $("#Puntaje");
+                    var Desempenio = new Chart(ctx, {
+                        type: "bar",
+                        data: data,
+                        stacked: false,
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+
                                     }
-                                }
-                            }],
-                            xAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    fontSize:18,
-                                }
-                            }]
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function (tooltipItem, data) {
-                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                                    if (label) {
-                                        label += ': ';
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        fontSize: 18,
                                     }
-                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
-                                    return label;
-                                }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Desempeño según capacidades evaluadas en el área de Matemáticas.',
-                            fontSize: 48
-                        },
-                        plugins: {
-                            datalabels: {
+                                }]
+                            },
+                            title: {
                                 display: true,
-                                color: 'black',
-                                align: 'center',
-                                font: {
-                                    size: 20
-                                },
-                                formatter: function (value) {
-                                    return (value * 100).toFixed(2) + '%';
+                                text: 'Puntaje Total Por Área',
+                                fontSize: 48
+                            },
+
+                            plugins: {
+                                datalabels: {
+                                    display: true,
+                                    color: 'black',
+                                    align: 'center',
+                                    font: {
+                                        size: 20
+                                    },
+                                    formatter: function (value) {
+                                        return value;
+                                    }
                                 }
                             }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
 
-        $.ajax({
-            url: `/school/lan-ability-chart/${event.target.value}`,
-            type: 'GET',
-            success: function (data) {
-                console.log(data)
-                var ctx = $("#habilidad-lengua");
-                var Desempenio = new Chart(ctx, {
-                    type: "bar",
-                    data: data,
-                    stacked: true,
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    callback: function (value, index, values) {
-                                        return value * 100 + '%';
+            $.ajax({
+                url: `/school/math-ability-chart/${event.target.value}`,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                    var ctx = $("#habilidad-matematica");
+                    var Desempenio = new Chart(ctx, {
+                        type: "bar",
+                        data: data,
+                        stacked: true,
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function (value, index, values) {
+                                            return value * 100 + '%';
+                                        }
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        fontSize: 18,
+                                    }
+                                }]
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
+                                        return label;
                                     }
                                 }
-                            }],
-                            xAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    fontSize:18,
-                                }
-                            }]
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function (tooltipItem, data) {
-                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
-                                    return label;
-                                }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Desempeño según capacidades evaluadas en el área de Lengua.',
-                            fontSize: 48
-                        },
-                        plugins: {
-                            datalabels: {
+                            },
+                            title: {
                                 display: true,
-                                color: 'black',
-                                align: 'center',
-                                font: {
-                                    size: 20
-                                },
-                                formatter: function (value) {
-                                    return (value * 100).toFixed(2) + '%';
+                                text: 'Desempeño según capacidades evaluadas en el área de Matemáticas.',
+                                fontSize: 48
+                            },
+                            plugins: {
+                                datalabels: {
+                                    display: true,
+                                    color: 'black',
+                                    align: 'center',
+                                    font: {
+                                        size: 20
+                                    },
+                                    formatter: function (value) {
+                                        return (value * 100).toFixed(2) + '%';
+                                    }
                                 }
                             }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
 
-        $.ajax({
-            url: `/school/cn-ability-chart/${event.target.value}`,
-            type: 'GET',
-            success: function (data) {
-                console.log(data)
-                var ctx = $("#habilidad-cn");
-                var Desempenio = new Chart(ctx, {
-                    type: "bar",
-                    data: data,
-                    stacked: true,
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    callback: function (value, index, values) {
-                                        return value * 100 + '%';
+            $.ajax({
+                url: `/school/lan-ability-chart/${event.target.value}`,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                    var ctx = $("#habilidad-lengua");
+                    var Desempenio = new Chart(ctx, {
+                        type: "bar",
+                        data: data,
+                        stacked: true,
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function (value, index, values) {
+                                            return value * 100 + '%';
+                                        }
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        fontSize: 18,
+                                    }
+                                }]
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
+                                        return label;
                                     }
                                 }
-                            }],
-                            xAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    fontSize: 18,
-                                }
-                            }]
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function (tooltipItem, data) {
-                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
-                                    return label;
-                                }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Desempeño según capacidades evaluadas en el área de Ciencias Naturales.',
-                            fontSize: 48
-                        },
-                        plugins: {
-                            datalabels: {
+                            },
+                            title: {
                                 display: true,
-                                color: 'black',
-                                align: 'center',
-                                font: {
-                                    size: 20
-                                },
-                                formatter: function (value) {
-                                    return (value * 100).toFixed(2) + '%';
+                                text: 'Desempeño según capacidades evaluadas en el área de Lengua.',
+                                fontSize: 48
+                            },
+                            plugins: {
+                                datalabels: {
+                                    display: true,
+                                    color: 'black',
+                                    align: 'center',
+                                    font: {
+                                        size: 20
+                                    },
+                                    formatter: function (value) {
+                                        return (value * 100).toFixed(2) + '%';
+                                    }
                                 }
                             }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
 
-        $.ajax({
-            url: `/school/cs-ability-chart/${event.target.value}`,
-            type: 'GET',
-            success: function (data) {
-                console.log(data)
-                var ctx = $("#habilidad-cs");
-                var Desempenio = new Chart(ctx, {
-                    type: "bar",
-                    data: data,
-                    stacked: true,
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    callback: function (value, index, values) {
-                                        return value * 100 + '%';
+            $.ajax({
+                url: `/school/cn-ability-chart/${event.target.value}`,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                    var ctx = $("#habilidad-cn");
+                    var Desempenio = new Chart(ctx, {
+                        type: "bar",
+                        data: data,
+                        stacked: true,
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function (value, index, values) {
+                                            return value * 100 + '%';
+                                        }
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        fontSize: 18,
+                                    }
+                                }]
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
+                                        return label;
                                     }
                                 }
-                            }],
-                            xAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    fontSize:18
-                                }
-                            }]
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function (tooltipItem, data) {
-                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
-                                    return label;
-                                }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Desempeño según capacidades evaluadas en el área de Ciencias Sociales.',
-                            fontSize: 48
-                        },
-                        plugins: {
-                            datalabels: {
+                            },
+                            title: {
                                 display: true,
-                                color: 'black',
-                                align: 'center',
-                                font: {
-                                    size: 20
-                                },
-                                formatter: function (value) {
-                                    return (value * 100).toFixed(2) + '%';
+                                text: 'Desempeño según capacidades evaluadas en el área de Ciencias Naturales.',
+                                fontSize: 48
+                            },
+                            plugins: {
+                                datalabels: {
+                                    display: true,
+                                    color: 'black',
+                                    align: 'center',
+                                    font: {
+                                        size: 20
+                                    },
+                                    formatter: function (value) {
+                                        return (value * 100).toFixed(2) + '%';
+                                    }
                                 }
                             }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
 
-        $.ajax({
-            url: `/school/participation-chart/${event.target.value}`,
-            type: 'GET',
-            success: function (data) {
-                console.log(data)
-                var ctx = $("#participacion");
-                var Desempenio = new Chart(ctx, {
-                    type: "pie",
-                    data: data,
-                    stacked: true,
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    callback: function (value, index, values) {
-                                        return value * 100 + '%';
+            $.ajax({
+                url: `/school/cs-ability-chart/${event.target.value}`,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                    var ctx = $("#habilidad-cs");
+                    var Desempenio = new Chart(ctx, {
+                        type: "bar",
+                        data: data,
+                        stacked: true,
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function (value, index, values) {
+                                            return value * 100 + '%';
+                                        }
                                     }
-                                },
-                                display: false
-                            }],
-                            xAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    fontSize: 18
-                                },
-                                display: false
-                            }]
-                        },
-                        title: {
-                            display: true,
-                            text: 'Nivel de Participación',
-                            fontSize: 48
-                        },
-                        plugins: {
-                            datalabels: {
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        fontSize: 18
+                                    }
+                                }]
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += (parseFloat(tooltipItem.yLabel) * 100).toFixed(2) + '%';
+                                        return label;
+                                    }
+                                }
+                            },
+                            title: {
                                 display: true,
-                                color: 'black',
-                                align: 'center',
-                                font: {
-                                    size: 20
-                                },
-                                formatter: function (value) {
-                                    return value + '%';
+                                text: 'Desempeño según capacidades evaluadas en el área de Ciencias Sociales.',
+                                fontSize: 48
+                            },
+                            plugins: {
+                                datalabels: {
+                                    display: true,
+                                    color: 'black',
+                                    align: 'center',
+                                    font: {
+                                        size: 20
+                                    },
+                                    formatter: function (value) {
+                                        return (value * 100).toFixed(2) + '%';
+                                    }
                                 }
                             }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
 
-        $.ajax({
-            url: `/school/full-participation/${event.target.value}`,
-            type: 'GET',
-            success: function (data) {
-                $("#full-participation").html(data.full_participation);
-            }
-        });
+            $.ajax({
+                url: `/school/participation-chart/${event.target.value}`,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                    var ctx = $("#participacion");
+                    var Desempenio = new Chart(ctx, {
+                        type: "pie",
+                        data: data,
+                        stacked: true,
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function (value, index, values) {
+                                            return value * 100 + '%';
+                                        }
+                                    },
+                                    display: false
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        fontSize: 18
+                                    },
+                                    display: false
+                                }]
+                            },
+                            title: {
+                                display: true,
+                                text: 'Nivel de Participación',
+                                fontSize: 48
+                            },
+                            plugins: {
+                                datalabels: {
+                                    display: true,
+                                    color: 'black',
+                                    align: 'center',
+                                    font: {
+                                        size: 20
+                                    },
+                                    formatter: function (value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            });
 
-
+            $.ajax({
+                url: `/school/full-participation/${event.target.value}`,
+                type: 'GET',
+                success: function (data) {
+                    $("#full-participation").html(data.full_participation);
+                }
+            });
+        }
     });
 
 
