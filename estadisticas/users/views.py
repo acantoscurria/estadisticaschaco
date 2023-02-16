@@ -32,7 +32,7 @@ class CustomLoginView(LoginView):
             user.failed_login_attempts += 1
             if user.failed_login_attempts >= 4:
                 user.is_active = False
-                form.add_error(None, "Has llegado al límite máximo de intentos fallidos, comuníquese con estadísticas educativas")
+                form.add_error(None, "Has llegado al límite máximo de intentos fallidos, comuníquese con el Dpto. Evaluación Educativa.")
             user.save()
         if form.is_valid():
             user.failed_login_attempts = 0
@@ -81,7 +81,7 @@ def register(request):
                 return render(
                     request=request,
                     template_name="users/login.html",
-                    context={"error_register_form":"Error en registro: El usuario se encuentra registrado. Si no recuerda la contraseña deberá comunicarse con el Dpto. de estadísticas educativas."}
+                    context={"error_register_form":"Error en registro: El usuario se encuentra registrado. Si no recuerda la contraseña deberá comunicarse con el Dpto. de Evaluación Educativa."}
                     )
             
             user.set_password(password)
