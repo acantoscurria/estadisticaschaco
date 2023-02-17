@@ -84,6 +84,9 @@
             </div>
         </div>
 
+        <div id="empty-data" class="alert alert-danger w-50 mx-auto mt-5" role="alert">
+            No se encontró información para esta oferta.
+          </div>
 </div>
 
 <div id="preloader">
@@ -98,8 +101,10 @@
     const selectElement = $('#select-oferta');
     
     $('#preloader').hide();
+    $('#empty-data').hide();
 
     var ajaxCount = 0;
+    var have_participation = 0;
 
     $(document).ajaxStart(function () {
         ajaxCount++;
@@ -110,11 +115,17 @@
         ajaxCount--;
         if (ajaxCount == 0) {
             $('#preloader').hide();
+            console.log(have_participation)
+            if (!have_participation){
+                $("#main").remove()
+                $("#empty-data").show()
+            }
         }
     });
+    
 
     selectElement.on('change', (event) => {
-
+        $('#empty-data').hide();
         if (event.target.value != '') {
             //$('#preloader').removeClass('hide');
             if ($("#main")) {
@@ -636,7 +647,8 @@
                 url: `/school/full-participation/${event.target.value}`,
                 type: 'GET',
                 success: function (data) {
-                    $("#full-participation").html(data.full_participation);
+                   $("#full-participation").html(data.full_participation);
+                   have_participation= data.full_participation;
 
                 }
             });
