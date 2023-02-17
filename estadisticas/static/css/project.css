@@ -1,5 +1,15 @@
 /* These styles are generated from project.scss. */
 
+*{
+  padding: 0;
+  margin: 0;;
+}
+
+#navbarSupportedContent li::after{
+content: '|';
+}
+
+
 #preloader {
   display: flex;
   justify-content: center;
