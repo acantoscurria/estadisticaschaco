@@ -30,7 +30,7 @@ class CustomLoginView(LoginView):
             user = None
         if user:
             user.failed_login_attempts += 1
-            if user.failed_login_attempts >= 4:
+            if user.failed_login_attempts >= 6:
                 user.is_active = False
                 form.add_error(None, "Has llegado al límite máximo de intentos fallidos, comuníquese con el Dpto. Evaluación Educativa.")
             user.save()
