@@ -143,9 +143,17 @@
             table_title.style.fontFamily = 'Arial'
             table_title.style.fontWeight = 'bold';
 
+            var title_performance = document.createElement("h1")
+            title_performance.textContent="Desempeño"
+            title_performance.classList.add("mx-auto", "text-center","mt-5")
+            title_performance.style.color = '#666666'
+            title_performance.style.fontSize = '48px'
+            title_performance.style.fontFamily = 'Arial'
+            title_performance.style.fontWeight = 'bold';
+
             var tabla_img = document.createElement('img');
             tabla_img.src = '{% static "images/tabla.png" %}'
-            tabla_img.classList.add("mx-auto", "mt-5", "img-fluid")
+            tabla_img.classList.add("mx-auto","text-center", "mt-5", "img-fluid")
 
 
             var tabla2 = document.createElement("table");
@@ -195,7 +203,7 @@
 
             var canvas2 = document.createElement("canvas");
             canvas2.id = "Desempenio";
-            canvas2.className = "mt-5";
+            canvas2.className = "mt-2";
 
             var canvas3 = document.createElement("canvas");
             canvas3.id = "habilidad-matematica";
@@ -219,6 +227,7 @@
             main.appendChild(table_title);
             main.appendChild(tabla2);
             main.appendChild(canvas1);
+            main.append(title_performance);
             main.appendChild(tabla_img);
             main.appendChild(canvas2);
             main.appendChild(canvas3);
@@ -273,7 +282,6 @@
                             },
                             title: {
                                 display: true,
-                                text: 'Desempeño',
                                 fontSize: 48
                             },
                             plugins: {
@@ -309,6 +317,7 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
+                                        max: 250,
 
                                     }
                                 }],
@@ -316,6 +325,7 @@
                                     ticks: {
                                         beginAtZero: true,
                                         fontSize: 18,
+                                        
                                     }
                                 }]
                             },
@@ -334,7 +344,7 @@
                                         size: 20
                                     },
                                     formatter: function (value) {
-                                        return value;
+                                        return value + ' de 250';
                                     }
                                 }
                             }
