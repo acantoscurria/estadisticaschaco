@@ -15,7 +15,9 @@ class CustomLoginView(LoginView):
     template_name= "users/login.html"
 
     def get_success_url(self):
-        return reverse_lazy("schools:offer-selection")  # success_url may be lazy
+        if self.request.user.is_superuser:
+            return reverse_lazy("schools:admin")
+        return reverse_lazy("schools:offer-selection")
     
     def post(self, request, *args, **kwargs):
         """

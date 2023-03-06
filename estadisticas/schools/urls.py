@@ -1,4 +1,5 @@
 from django.urls import include, path
+from django.views.generic import TemplateView
 
 from .views import (
     OfferSelectionView,
@@ -9,13 +10,16 @@ from .views import (
     cn_ability_chart,
     cs_ability_chart,
     participation_chart,
-    full_participation
+    full_participation,
+    search_cue
     )
 
 app_name = 'schools'
 
 urlpatterns = [
     path("offer-selection/",OfferSelectionView.as_view(),name="offer-selection"),
+    path("admin/",TemplateView.as_view(template_name="admin/admin.html"),name="admin"),
+    path("<int:cueanexo>/search_cue/",search_cue,name="search_cue"),
     path("performance-chart/<oferta>",performance_chart,name="performance-chart"),
     path("total-score-chart/<oferta>",total_score_chart,name="total-score-char"),
     path("math-ability-chart/<oferta>",math_ability_chart,name="math-ability-chart"),

@@ -5,7 +5,7 @@ from django.http import JsonResponse,Http404
 from django.contrib.auth.decorators import login_required
 
 from users.models import User
-from schools.models import DechDesempenio,DechTotalScore,Participation,AgrupacionCueanexos
+from schools.models import DechDesempenio,DechTotalScore,Participation,AgrupacionCueanexos,Offer
 
 # Create your views here.
 options_desempenio={
@@ -111,6 +111,16 @@ def cueanexo_agrupado(cueanexo):
             return True
     except:
         return False
+    
+
+@login_required(login_url='/')
+def search_cue(request,cueanexo):
+    if request.method == "GET" and cueanexo:
+        list_cue = Offer.objects.filter(cueanexo__contains=cueanexo).distinct()[:5].values('cueanexo','nom_est')
+        list_cue = list(list_cue)
+        return JsonResponse(data=list_cue,safe=False)
+    else:
+        return JsonResponse({})
 
 class OfferSelectionView(LoginRequiredMixin,ListView):
     template_name = "schools/offer_charts.html"
@@ -125,7 +135,7 @@ class OfferSelectionView(LoginRequiredMixin,ListView):
 
     
 # añadir login required y solo metodo get
-@login_required
+@login_required(login_url='/')
 def performance_chart(request,oferta=None):
     if not oferta:
         return JsonResponse({})
@@ -175,7 +185,7 @@ def performance_chart(request,oferta=None):
     return JsonResponse(data)
 
 #ver permisos, al menos de login
-@login_required
+@login_required(login_url='/')
 def total_score_chart(request,oferta=None):
 
     if not oferta:
@@ -222,7 +232,7 @@ def total_score_chart(request,oferta=None):
 
     return JsonResponse(data)
 
-@login_required
+@login_required(login_url='/')
 def math_ability_chart(request,oferta):
     if not oferta:
         return JsonResponse({})
@@ -265,7 +275,7 @@ def math_ability_chart(request,oferta):
     }
     return JsonResponse(data)
 
-@login_required
+@login_required(login_url='/')
 def lan_ability_chart(request,oferta):
     if not oferta:
         return JsonResponse({})
@@ -307,7 +317,7 @@ def lan_ability_chart(request,oferta):
     }
     return JsonResponse(data)
 
-@login_required
+@login_required(login_url='/')
 def cn_ability_chart(request,oferta):
     if not oferta:
         return JsonResponse({})
@@ -392,7 +402,7 @@ def cs_ability_chart(request,oferta):
     }
     return JsonResponse(data)
 
-@login_required
+@login_required(login_url='/')
 def participation_chart(request,oferta):
 
     if not oferta:
@@ -434,7 +444,7 @@ def participation_chart(request,oferta):
     
     return JsonResponse(data)
 
-@login_required
+@login_required(login_url='/')
 def full_participation(request,oferta):
     if not oferta:
         return JsonResponse({})

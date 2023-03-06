@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+
+{% block css %}
+<style>
+  body {
+
+    background-color: #eee;
+  }
+
+  .card {
+
+    background-color: #fff;
+    padding: 15px;
+    border: none;
+  }
+
+  .input-box {
+    position: relative;
+  }
+
+  .input-box i {
+    position: absolute;
+    right: 13px;
+    top: 15px;
+    color: #ced4da;
+
+  }
+
+  .form-control {
+
+    height: 50px;
+    background-color: #eeeeee69;
+  }
+
+  .form-control:focus {
+    background-color: #eeeeee69;
+    box-shadow: none;
+    border-color: #eee;
+  }
+
+
+  .list {
+
+    padding-top: 20px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+
+  }
+
+  .border-bottom {
+
+    border-bottom: 2px solid #eee;
+  }
+
+  .list i {
+    font-size: 19px;
+    color: red;
+  }
+
+  .list small {
+
+    color: grey;
+  }
+</style>
+{% endblock css %}
+
+
+{% block content %}
+
+<div class="container mt-5">
+
+  <div class="row d-flex justify-content-center ">
+
+    <div class="col-md-6">
+
+      {% csrf_token %}
+      <div class="card">
+
+        <div class="input-box">
+          <input type="text" class="form-control" maxlength="9" pattern="[0-9]*" title="Ingrese el cue (5 dígitos)"
+            name="cue" placeholder="Ingrese un CUE (7 dígitos)">
+          <i class="fa fa-search"></i>
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  $(document).ready(function () {
+
+    $('.input-box input').on('keyup', function () {
+      $('.list').remove()
+      $('.results').remove()
+      let inputVal = ''
+      inputVal = $(this).val();
+      if (inputVal) {
+        $.ajax({
+          url: `/school/${inputVal}/search_cue/`,
+          type: 'GET',
+          success: function (data) {
+
+            data.forEach(element => {
+              var line = $('<div>').addClass("list border-bottom mb-2")
+              var div = $('<div>').addClass('d-flex align-items-center results');
+              div.on('click', function () {
+                window.location.href = `/school/${element.cueanexo}/`;
+              });
+              var i = $('<i>').addClass('fas fa-university');
+              var div2 = $('<div>').addClass('d-flex flex-column ml-3');
+              var span = $('<span>').text(element.nom_est);
+              var small = $('<small>').text(`#${element.cueanexo}`);
+
+              div.append(i);
+              div2.append(span, small);
+              div.append(div2);
+
+              // Ahora puedes agregar el elemento a algún contenedor en tu página, por ejemplo:
+              $('.card').append(line);
+              $('.card').append(div);
+            });
+          },
+          error: function (data) {
+            console.log(data)
+          },
+        })
+      }
+    });
+
+
+  });
+</script>
+{% endblock content %}
