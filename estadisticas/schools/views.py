@@ -114,9 +114,9 @@ def cueanexo_agrupado(cueanexo):
     
 
 @login_required(login_url='/')
-def search_cue(request,cueanexo):
-    if request.method == "GET" and cueanexo:
-        list_cue = Offer.objects.filter(cueanexo__contains=cueanexo).distinct()[:5].values('cueanexo','nom_est')
+def search_cue(request,cue):
+    if request.method == "GET" and cue:
+        list_cue = Offer.objects.filter(cue=cue).distinct()[:5].values('cue','nom_est')
         list_cue = list(list_cue)
         return JsonResponse(data=list_cue,safe=False)
     else:
@@ -130,6 +130,19 @@ class OfferSelectionView(LoginRequiredMixin,ListView):
     def get_queryset(self):
         try:
             return User.objects.get(username=self.request.user.username).offer_set.values('anexo','oferta')
+        except:
+            raise Http404("No se encontró la oferta.")
+        
+
+class OfferSelectionAdminView(LoginRequiredMixin,ListView):
+    template_name = "schools/offer_charts.html"
+    context_object_name = "school_offers"
+    login_url = '/'
+    
+    def get_queryset(self):
+        try:
+            cue = self.kwargs['cue']
+            return User.objects.get(username=cue).offer_set.values('anexo','oferta','cue')
         except:
             raise Http404("No se encontró la oferta.")
 

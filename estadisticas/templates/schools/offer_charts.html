@@ -3,7 +3,7 @@
 
 
 {% block content %}
-
+{{school_offers.first.cue}}
 <div id="select-oferta" class="container text-center mt-5">
     <select class="form-select w-50 mx-auto" aria-label="Default select example">
         <option selected value="">Seleccione una oferta</option>
@@ -97,6 +97,8 @@
     function imprimir() {
         window.print()
     }
+
+    let cue = '{{school_offers.first.cue}}'
 
     const selectElement = $('#select-oferta');
     

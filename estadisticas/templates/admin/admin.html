@@ -110,21 +110,19 @@
             data.forEach(element => {
               var line = $('<div>').addClass("list border-bottom mb-2")
               var div = $('<div>').addClass('d-flex align-items-center results');
-              div.on('click', function () {
-                window.location.href = `/school/${element.cueanexo}/`;
-              });
               var i = $('<i>').addClass('fas fa-university');
               var div2 = $('<div>').addClass('d-flex flex-column ml-3');
               var span = $('<span>').text(element.nom_est);
-              var small = $('<small>').text(`#${element.cueanexo}`);
+              var small = $('<small>').text(`#${element.cue}`);
 
               div.append(i);
               div2.append(span, small);
               div.append(div2);
+              var a = $('<a>').attr('href', `/school/${element.cue}/offer-selection/`).append(div);
 
               // Ahora puedes agregar el elemento a algún contenedor en tu página, por ejemplo:
               $('.card').append(line);
-              $('.card').append(div);
+              $('.card').append(a);
             });
           },
           error: function (data) {
