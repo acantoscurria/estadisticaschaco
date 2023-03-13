@@ -3,7 +3,6 @@
 
 
 {% block content %}
-{{school_offers.first.cue}}
 <div id="select-oferta" class="container text-center mt-5">
     <select class="form-select w-50 mx-auto" aria-label="Default select example">
         <option selected value="">Seleccione una oferta</option>
@@ -13,6 +12,7 @@
     </select>
     <h3 class="mt-5">Reporte Operativo Provincial DECH:</h3> 
     <h4 class="mb-5">{{user.offer_set.first.nom_est}}</h2>
+    <h4 class="mb-5">{{school_offers.first.nom_est}}</h2>
 
     <button type="button" class="btn btn-outline-secondary" onclick="imprimir()">Imprimir pantalla</button>
     <a href="{% static 'pdf/resultados_dech2022.pdf' %}" class="btn btn-outline-dark">Descargar reporte Provincial</a>
@@ -241,10 +241,28 @@
 
             document.body.appendChild(main);
 
+            let url_performance = `/school/performance-chart/${event.target.value}`;
+            let url_total_score = `/school/total-score-chart/${event.target.value}`;
+            let url_math_ability = `/school/math-ability-chart/${event.target.value}`;
+            let url_lan_ability = `/school/lan-ability-chart/${event.target.value}`;
+            let url_cn_ability = `/school/cn-ability-chart/${event.target.value}`;
+            let url_cs_ability = `/school/cs-ability-chart/${event.target.value}`;
+            let url_participation = `/school/participation-chart/${event.target.value}`;
+            let url_full_participation = `/school/full-participation/${event.target.value}`;
 
-
+            if (cue){
+                url_performance = `/school/performance-chart/${event.target.value}/${cue}/`;
+                url_total_score = `/school/total-score-chart/${event.target.value}/${cue}/`;
+                url_math_ability = `/school/math-ability-chart/${event.target.value}/${cue}/`;
+                url_lan_ability = `/school/lan-ability-chart/${event.target.value}/${cue}/`;
+                url_cn_ability = `/school/cn-ability-chart/${event.target.value}/${cue}/`;
+                url_cs_ability = `/school/cs-ability-chart/${event.target.value}/${cue}/`;
+                url_participation = `/school/participation-chart/${event.target.value}/${cue}/`;
+                url_full_participation = `/school/full-participation/${event.target.value}/${cue}/`;
+            }
+            console.log(`LLAMADO A PERFORMANCE`)
             $.ajax({
-                url: `/school/performance-chart/${event.target.value}`,
+                url: url_performance,
                 type: 'GET',
                 success: function (data) {
                     console.log(data)
@@ -303,9 +321,9 @@
                     });
                 }
             });
-
+            console.log(`LLAMADO A TOTAL SCORE`)
             $.ajax({
-                url: `/school/total-score-chart/${event.target.value}`,
+                url: url_total_score,
                 type: 'GET',
                 success: function (data) {
                     console.log(data)
@@ -354,9 +372,9 @@
                     });
                 }
             });
-
+            console.log(`LLAMADO A MATHEMATICS ABILITY`)
             $.ajax({
-                url: `/school/math-ability-chart/${event.target.value}`,
+                url: url_math_ability,
                 type: 'GET',
                 success: function (data) {
                     console.log(data)
@@ -416,9 +434,9 @@
                     });
                 }
             });
-
+            console.log(`LLAMADO A LAN ABILITY`)
             $.ajax({
-                url: `/school/lan-ability-chart/${event.target.value}`,
+                url: url_lan_ability,
                 type: 'GET',
                 success: function (data) {
                     console.log(data)
@@ -478,9 +496,9 @@
                     });
                 }
             });
-
+            console.log(`LLAMADO A CN ABILITY`)
             $.ajax({
-                url: `/school/cn-ability-chart/${event.target.value}`,
+                url:url_cn_ability,
                 type: 'GET',
                 success: function (data) {
                     console.log(data)
@@ -540,9 +558,9 @@
                     });
                 }
             });
-
+            console.log(`LLAMADO A CS ABILITY`)
             $.ajax({
-                url: `/school/cs-ability-chart/${event.target.value}`,
+                url:url_cs_ability,
                 type: 'GET',
                 success: function (data) {
                     console.log(data)
@@ -602,9 +620,9 @@
                     });
                 }
             });
-
+            console.log(`LLAMADO A PARTICIPATION`)
             $.ajax({
-                url: `/school/participation-chart/${event.target.value}`,
+                url:url_participation,
                 type: 'GET',
                 success: function (data) {
                     console.log(data)
@@ -655,8 +673,10 @@
                 }
             });
 
+            console.log(`LLAMADO A FULL PARTICIPATION`)
             $.ajax({
-                url: `/school/full-participation/${event.target.value}`,
+                
+                url: url_full_participation,
                 type: 'GET',
                 success: function (data) {
                    $("#full-participation").html(data.full_participation);

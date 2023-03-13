@@ -142,19 +142,25 @@ class OfferSelectionAdminView(LoginRequiredMixin,ListView):
     def get_queryset(self):
         try:
             cue = self.kwargs['cue']
-            return User.objects.get(username=cue).offer_set.values('anexo','oferta','cue')
+            return User.objects.get(username=cue).offer_set.values('anexo','oferta','cue','nom_est')
         except:
             raise Http404("No se encontró la oferta.")
 
     
 # añadir login required y solo metodo get
 @login_required(login_url='/')
-def performance_chart(request,oferta=None):
+def performance_chart(request,oferta=None,cue=None):
     if not oferta:
         return JsonResponse({})
     
     anexo,oferta = oferta.split(" | ")
-    cueanexo = request.user.username + anexo
+    if cue:
+        cueanexo = cue + anexo
+    else:
+        cueanexo = request.user.username + anexo
+
+    oferta = oferta.strip()
+
     datasets = []
     table_name_m = options_desempenio.get(oferta).get('table_name_m')
     table_name_l = options_desempenio.get(oferta).get('table_name_l')
@@ -199,13 +205,16 @@ def performance_chart(request,oferta=None):
 
 #ver permisos, al menos de login
 @login_required(login_url='/')
-def total_score_chart(request,oferta=None):
+def total_score_chart(request,oferta=None,cue=None):
 
     if not oferta:
         return JsonResponse({})
     
     anexo,oferta = oferta.split(" | ")
-    cueanexo = request.user.username + anexo
+    if cue:
+        cueanexo = cue + anexo
+    else:
+        cueanexo = request.user.username + anexo
     datasets = []
     table_name_prim="_primaria"
     table_name_sec="_secundaria"
@@ -246,12 +255,18 @@ def total_score_chart(request,oferta=None):
     return JsonResponse(data)
 
 @login_required(login_url='/')
-def math_ability_chart(request,oferta):
+def math_ability_chart(request,oferta,cue=None):
     if not oferta:
         return JsonResponse({})
     
     anexo,oferta = oferta.split(" | ")
-    cueanexo = request.user.username + anexo
+    if cue:
+        cueanexo = cue + anexo
+    else:
+        cueanexo = request.user.username + anexo
+
+    oferta = oferta.strip()
+
     datasets = []
     table_name_m = options_capacidades.get(oferta).get('table_name_m')
 
@@ -289,13 +304,19 @@ def math_ability_chart(request,oferta):
     return JsonResponse(data)
 
 @login_required(login_url='/')
-def lan_ability_chart(request,oferta):
+def lan_ability_chart(request,oferta,cue=None):
     if not oferta:
         return JsonResponse({})
     
     anexo,oferta = oferta.split(" | ")
-    cueanexo = request.user.username + anexo
+    if cue:
+        cueanexo = cue + anexo
+    else:
+        cueanexo = request.user.username + anexo
     datasets = []
+
+    oferta = oferta.strip()
+
     table_name = options_capacidades.get(oferta).get('table_name_l')
 
 
@@ -331,12 +352,16 @@ def lan_ability_chart(request,oferta):
     return JsonResponse(data)
 
 @login_required(login_url='/')
-def cn_ability_chart(request,oferta):
+def cn_ability_chart(request,oferta,cue=None):
     if not oferta:
         return JsonResponse({})
     
     anexo,oferta = oferta.split(" | ")
-    cueanexo = request.user.username + anexo
+    oferta = oferta.strip()
+    if cue:
+        cueanexo = cue + anexo
+    else:
+        cueanexo = request.user.username + anexo
     datasets = []
     table_name = options_capacidades.get(oferta).get('table_name_cn')
 
@@ -372,12 +397,16 @@ def cn_ability_chart(request,oferta):
     }
     return JsonResponse(data)
 
-def cs_ability_chart(request,oferta):
+def cs_ability_chart(request,oferta,cue=None):
     if not oferta:
         return JsonResponse({})
     
     anexo,oferta = oferta.split(" | ")
-    cueanexo = request.user.username + anexo
+    oferta = oferta.strip()
+    if cue:
+        cueanexo = cue + anexo
+    else:
+        cueanexo = request.user.username + anexo
     datasets = []
 
     table_name = options_capacidades.get(oferta).get('table_name_cs')
@@ -416,13 +445,16 @@ def cs_ability_chart(request,oferta):
     return JsonResponse(data)
 
 @login_required(login_url='/')
-def participation_chart(request,oferta):
+def participation_chart(request,oferta,cue=None):
 
     if not oferta:
         return JsonResponse({})
     
     anexo,oferta = oferta.split(" | ")
-    cueanexo = request.user.username + anexo
+    if cue:
+        cueanexo = cue + anexo
+    else:
+        cueanexo = request.user.username + anexo
     datasets = []
     nivel=""
     data = {
@@ -458,12 +490,15 @@ def participation_chart(request,oferta):
     return JsonResponse(data)
 
 @login_required(login_url='/')
-def full_participation(request,oferta):
+def full_participation(request,oferta,cue=None):
     if not oferta:
         return JsonResponse({})
     
     anexo,oferta = oferta.split(" | ")
-    cueanexo = request.user.username + anexo
+    if cue:
+        cueanexo = cue + anexo
+    else:
+        cueanexo = request.user.username + anexo
     table_name_prim="_primaria"
     table_name_sec="_secundaria"
     table_name=""
@@ -483,7 +518,7 @@ def full_participation(request,oferta):
     try:
         total_score = DechTotalScore.objects.using("detch").raw("select id,puntaje_promedio from dech.puntaje{} where cueanexo = '{}'".format(table_name,cueanexo))
         data["full_participation"] = total_score[0].puntaje_promedio
-
+        print (data)
     except:
         return JsonResponse(data)
 
