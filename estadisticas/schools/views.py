@@ -211,6 +211,7 @@ def total_score_chart(request,oferta=None,cue=None):
         return JsonResponse({})
     
     anexo,oferta = oferta.split(" | ")
+    oferta = oferta.strip()
     if cue:
         cueanexo = cue + anexo
     else:
@@ -259,13 +260,13 @@ def math_ability_chart(request,oferta,cue=None):
     if not oferta:
         return JsonResponse({})
     
+    oferta = oferta.strip()
+    
     anexo,oferta = oferta.split(" | ")
     if cue:
         cueanexo = cue + anexo
     else:
         cueanexo = request.user.username + anexo
-
-    oferta = oferta.strip()
 
     datasets = []
     table_name_m = options_capacidades.get(oferta).get('table_name_m')
@@ -451,6 +452,7 @@ def participation_chart(request,oferta,cue=None):
         return JsonResponse({})
     
     anexo,oferta = oferta.split(" | ")
+    oferta = oferta.strip()
     if cue:
         cueanexo = cue + anexo
     else:
@@ -495,6 +497,7 @@ def full_participation(request,oferta,cue=None):
         return JsonResponse({})
     
     anexo,oferta = oferta.split(" | ")
+    oferta = oferta.strip()
     if cue:
         cueanexo = cue + anexo
     else:
@@ -515,11 +518,18 @@ def full_participation(request,oferta,cue=None):
     else:
         table_name = table_name_sec
 
-    try:
-        total_score = DechTotalScore.objects.using("detch").raw("select id,puntaje_promedio from dech.puntaje{} where cueanexo = '{}'".format(table_name,cueanexo))
-        data["full_participation"] = total_score[0].puntaje_promedio
-        print (data)
-    except:
-        return JsonResponse(data)
+   
+
+    # try:
+    total_score = DechTotalScore.objects.using("detch").raw("select id,puntaje_promedio from dech.puntaje{} where cueanexo = '{}'".format(table_name,cueanexo))
+    print(f"ESTE ES EL CONTENIDO DE TOTAL SCORE: {total_score}")
+    print(f"ESTE ES EL CUEANEXO: {cueanexo}")
+    print(f"ESTE ES EL NOMBRE DE TABLE: {table_name}")
+    print(f"ESTE ES EL NOMBRE DE OFERTA: |{oferta}|")
+
+    data["full_participation"] = total_score[0].puntaje_promedio
+    print (data)
+    # except:
+    #     return JsonResponse(data)
 
     return JsonResponse(data)
