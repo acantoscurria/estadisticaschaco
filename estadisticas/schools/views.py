@@ -520,16 +520,11 @@ def full_participation(request,oferta,cue=None):
 
    
 
-    # try:
-    total_score = DechTotalScore.objects.using("detch").raw("select id,puntaje_promedio from dech.puntaje{} where cueanexo = '{}'".format(table_name,cueanexo))
-    print(f"ESTE ES EL CONTENIDO DE TOTAL SCORE: {total_score}")
-    print(f"ESTE ES EL CUEANEXO: {cueanexo}")
-    print(f"ESTE ES EL NOMBRE DE TABLE: {table_name}")
-    print(f"ESTE ES EL NOMBRE DE OFERTA: |{oferta}|")
-
-    data["full_participation"] = total_score[0].puntaje_promedio
-    print (data)
-    # except:
-    #     return JsonResponse(data)
+    try:
+        total_score = DechTotalScore.objects.using("detch").raw("select id,puntaje_promedio from dech.puntaje{} where cueanexo = '{}'".format(table_name,cueanexo))
+        data["full_participation"] = total_score[0].puntaje_promedio
+      
+    except:
+        return JsonResponse(data)
 
     return JsonResponse(data)

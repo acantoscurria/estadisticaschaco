@@ -117,7 +117,6 @@
         ajaxCount--;
         if (ajaxCount == 0) {
             $('#preloader').hide();
-            console.log(have_participation)
             if (!have_participation){
                 $("#main").remove()
                 $("#empty-data").show()
@@ -260,12 +259,10 @@
                 url_participation = `/school/participation-chart/${event.target.value}/${cue}/`;
                 url_full_participation = `/school/full-participation/${event.target.value}/${cue}/`;
             }
-            console.log(`LLAMADO A PERFORMANCE`)
             $.ajax({
                 url: url_performance,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data)
                     var ctx = $("#Desempenio");
                     var Desempenio = new Chart(ctx, {
                         type: "bar",
@@ -321,12 +318,10 @@
                     });
                 }
             });
-            console.log(`LLAMADO A TOTAL SCORE`)
             $.ajax({
                 url: url_total_score,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data)
                     var ctx = $("#Puntaje");
                     var Desempenio = new Chart(ctx, {
                         type: "bar",
@@ -372,12 +367,10 @@
                     });
                 }
             });
-            console.log(`LLAMADO A MATHEMATICS ABILITY`)
             $.ajax({
                 url: url_math_ability,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data)
                     var ctx = $("#habilidad-matematica");
                     var Desempenio = new Chart(ctx, {
                         type: "bar",
@@ -434,12 +427,10 @@
                     });
                 }
             });
-            console.log(`LLAMADO A LAN ABILITY`)
             $.ajax({
                 url: url_lan_ability,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data)
                     var ctx = $("#habilidad-lengua");
                     var Desempenio = new Chart(ctx, {
                         type: "bar",
@@ -496,12 +487,10 @@
                     });
                 }
             });
-            console.log(`LLAMADO A CN ABILITY`)
             $.ajax({
                 url:url_cn_ability,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data)
                     var ctx = $("#habilidad-cn");
                     var Desempenio = new Chart(ctx, {
                         type: "bar",
@@ -558,12 +547,10 @@
                     });
                 }
             });
-            console.log(`LLAMADO A CS ABILITY`)
             $.ajax({
                 url:url_cs_ability,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data)
                     var ctx = $("#habilidad-cs");
                     var Desempenio = new Chart(ctx, {
                         type: "bar",
@@ -620,12 +607,10 @@
                     });
                 }
             });
-            console.log(`LLAMADO A PARTICIPATION`)
             $.ajax({
                 url:url_participation,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data)
                     var ctx = $("#participacion");
                     var Desempenio = new Chart(ctx, {
                         type: "pie",
@@ -672,8 +657,6 @@
                     });
                 }
             });
-
-            console.log(`LLAMADO A FULL PARTICIPATION`)
             $.ajax({
                 
                 url: url_full_participation,
